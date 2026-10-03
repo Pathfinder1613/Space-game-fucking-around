@@ -8,6 +8,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, screen_width, screen_height):
         super().__init__()
         self.player_surf = pygame.image.load(join("assets", "images", "player.png")).convert_alpha()  # Load your spaceship image here
+        self.laser_surf = pygame.image.load(join("assets", "images", "laser.png")).convert_alpha()  # Load laser image
         self.image = pygame.transform.scale(self.player_surf, (64, 64))
         self.rect = self.image.get_rect( center=(screen_width // 2, screen_height - 45))
         self.width = 50
@@ -22,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         # cooldown timer for shooting
         self.can_shoot = True
         self.laser_shoot_time = 0
-        self.cooldown_duration = 20
+        self.cooldown_duration = 0.8
 
     def handle_event(self, event):
         """Handle keyboard events for movement."""
@@ -60,11 +61,10 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = self.pos
 
         recent_keys = pygame.key.get_pressed()
-        """ Handle shooting logic based on spacebar press and cooldown."""
         if recent_keys[pygame.K_SPACE] and self.can_shoot:
-            print("Shoot laser!")  # Placeholder for shooting logic
             self.can_shoot = False
-            self.laser_shoot_time = pygame.time.get_ticks()  # Record the time when the laser was shot
+            self.laser_shoot_time = pygame.time.get_ticks()
+            laser = Laser(self.laser_surf, self.rect.midtop, laser_sprites)
 
         self.laser_timer()  # Update the shooting cooldown timer
 

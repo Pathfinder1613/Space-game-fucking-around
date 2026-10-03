@@ -11,8 +11,10 @@ class Meteor(pygame.sprite.Sprite):
         self.image = surf
         self.rect = self.image.get_rect(midbottom=pos)
         self.speed = 200  # Base speed
+        # self.spawn_amount = 5  # Number of meteors to spawn
         self.screen_width = screen_width
         self.screen_height = screen_height
+    
 
         # Set random angle for movement (0-90 degrees)
         angle_deg = random.uniform(0, 260)
@@ -30,13 +32,6 @@ class Meteor(pygame.sprite.Sprite):
         # Move based on velocity
         self.position += self.velocity * dt
         self.rect.center = self.position
-
-        # Remove the meteor if it goes off the screen
-        # if (self.rect.right < 0 or
-        #     self.rect.left > self.screen_width or
-        #     self.rect.bottom < 0 or
-        #     self.rect.top > self.screen_height):
-        #     self.kill()
 
         # check if meteor is off the screen and remove it
         if (self.rect.top > self.screen_height):

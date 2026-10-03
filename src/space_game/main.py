@@ -38,7 +38,7 @@ def main() -> None:
 
     # Meteor spawning
     meteor_spawn_timer = 0
-    meteor_spawn_delay = 1.5  # Spawn a meteor every 1.5 seconds
+    meteor_spawn_delay = 1.0  # Spawn a meteor every 1.0 seconds
 
     # Main game loop
     running = True
@@ -82,6 +82,12 @@ def main() -> None:
         laser_sprites.draw(screen)
         # Draw meteor sprites
         meteor_sprites.draw(screen)
+
+        # collision detection between lasers and meteors
+        for laser in laser_sprites:
+            collided_meteors = pygame.sprite.spritecollide(laser, meteor_sprites, True)  # Remove meteors on collision
+            if collided_meteors:
+                laser.kill()  # Remove the laser if it hits a meteor
 
         # Update the display
         pygame.display.flip()

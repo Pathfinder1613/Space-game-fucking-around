@@ -61,7 +61,6 @@ def main() -> None:
         laser_sprites.update(dt)
 
         # Meteor spawning
-
         meteor_spawn_timer += dt
         if meteor_spawn_timer >= meteor_spawn_delay:
             for _ in range(amount_of_meteors):

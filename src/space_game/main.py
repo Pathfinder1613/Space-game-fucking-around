@@ -3,9 +3,17 @@ import random
 import sys
 from os.path import join
 from space_game.player import Player
-from space_game.starsBackground import StarsBackground
+from space_game.StarBackground import StarBackground
 from space_game.laser import Laser
 from space_game.Meteor import Meteor
+
+from pygame.surface import Surface
+
+def setup_display(width: int, height: int) -> Surface:
+    pygame.display.set_caption("Space Game")
+    display = pygame.display.set_mode((width, height))
+    return display
+
 
 def main() -> None:
     """Main game loop for the space game."""
@@ -15,10 +23,7 @@ def main() -> None:
     amount_of_meteors = 5
 
     # Set up the display
-    screen_width = 1280
-    screen_height = 720
-    screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("Space Game")
+    screen = setup_display(1280, 720)
 
     # Clock to control the frame rate
     clock = pygame.time.Clock()
@@ -32,11 +37,11 @@ def main() -> None:
     meteor_image = pygame.image.load(join("assets", "images", "meteor.png")).convert_alpha()
 
     # Create the player
-    player = Player(screen_width, screen_height)
+    player = Player(screen.width, screen.height)
     all_sprites.add(player)
 
     # Create the starry background
-    stars_background = StarsBackground(screen_width, screen_height)
+    stars_background = StarBackground(screen.width, screen.height)
 
     # Meteor spawning
     meteor_spawn_timer = 0
@@ -65,9 +70,9 @@ def main() -> None:
         if meteor_spawn_timer >= meteor_spawn_delay:
             for _ in range(amount_of_meteors):
                 # Spawn a meteor at a random position at the top of the screen
-                meteor_x = random.randint(20, screen_width - 20)  # Keep away from edges
+                meteor_x = random.randint(20, screen.width - 20)  # Keep away from edges
                 meteor_y = -50  # Start slightly above the screen
-                meteor = Meteor(meteor_image, (meteor_x, meteor_y), meteor_sprites, screen_width, screen_height)
+                meteor = Meteor(meteor_image, (meteor_x, meteor_y), meteor_sprites, screen.width, screen.height)
                 meteor_sprites.add(meteor)
                 all_sprites.add(meteor)
                 meteor_spawn_timer = 0

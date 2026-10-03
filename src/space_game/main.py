@@ -6,13 +6,12 @@ from space_game.player import Player
 from space_game.starsBackground import StarsBackground
 from space_game.laser import Laser
 from space_game.Meteor import Meteor
+from space_game.meteor_spawing import MeteorSpawner
 
 def main() -> None:
     """Main game loop for the space game."""
     # Initialize pygame
     pygame.init()
-
-    amount_of_meteors = 5
 
     # Set up the display
     screen_width = 1280
@@ -38,9 +37,8 @@ def main() -> None:
     # Create the starry background
     stars_background = StarsBackground(screen_width, screen_height)
 
-    # Meteor spawning
-    meteor_spawn_timer = 0
-    meteor_spawn_delay = 1.0  # Spawn a meteor every 1.0 seconds
+    # Create the meteor spawner
+    meteor_spawner = MeteorSpawner(screen_width, screen_height, meteor_image, meteor_sprites, all_sprites)
 
     # Main game loop
     running = True
@@ -60,20 +58,8 @@ def main() -> None:
         player.update(dt, laser_sprites)
         laser_sprites.update(dt)
 
-        # Meteor spawning
-        meteor_spawn_timer += dt
-        if meteor_spawn_timer >= meteor_spawn_delay:
-            for _ in range(amount_of_meteors):
-                # Spawn a meteor at a random position at the top of the screen
-                meteor_x = random.randint(20, screen_width - 20)  # Keep away from edges
-                meteor_y = -50  # Start slightly above the screen
-                meteor = Meteor(meteor_image, (meteor_x, meteor_y), meteor_sprites, screen_width, screen_height)
-                meteor_sprites.add(meteor)
-                all_sprites.add(meteor)
-                meteor_spawn_timer = 0
-
-        # Update meteor sprites
-        meteor_sprites.update(dt)
+        # Update the meteor spawner
+        meteor_spawner.update(dt)
 
         # Drawing / rendering
         screen.fill((0, 0, 0))  # Fill the screen with black
@@ -91,6 +77,8 @@ def main() -> None:
             collided_meteors = pygame.sprite.spritecollide(laser, meteor_sprites, True)  # Remove meteors on collision
             if collided_meteors:
                 laser.kill()  # Remove the laser if it hits a meteor
+
+        meteor_sprites.update(dt)  # Update meteor positions
 
         # Update the display
         pygame.display.flip()

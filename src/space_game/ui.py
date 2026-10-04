@@ -30,8 +30,7 @@ class GameUI:
         self.health_bar = pygame_gui.elements.UIProgressBar(
             relative_rect=pygame.Rect((90, 50), (200, 25)),
             manager=self.ui_manager,
-            object_id='#health_bar',
-            start_percentage=100  # Start at full health (100%)
+            object_id='#health_bar'
         )
 
         # Shooting cooldown progress bar with label
@@ -45,8 +44,7 @@ class GameUI:
         self.cooldown_bar = pygame_gui.elements.UIProgressBar(
             relative_rect=pygame.Rect((90, 85), (200, 25)),
             manager=self.ui_manager,
-            object_id='#cooldown_bar',
-            start_percentage=100  # Start at 100% (ready to shoot)
+            object_id='#cooldown_bar'
         )
 
     def update(self, dt, score, player_health, player_max_health,

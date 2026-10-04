@@ -45,7 +45,7 @@ class StarBackground:
                                      self.screen_height))
 
     def update(self: StarBackground, delta: float):
-        self.star_sprites.update(delta)
+        self.star_sprites.update(delta * self.speed_multiplier)
         pass
 
     def draw(self: StarBackground, screen: Surface):

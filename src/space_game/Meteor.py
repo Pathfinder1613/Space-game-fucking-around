@@ -11,7 +11,7 @@ class Meteor(pygame.sprite.Sprite):
         self.original_image = surf
 
         self.image = surf
-        self.rect = self.image.get_rect(midbottom=pos)
+        self.rect = self.image.get_rect(midtop=pos)
 
         self.rotation_rate = random.normalvariate(0, 20)
         self.rotation = float(0)
@@ -20,8 +20,8 @@ class Meteor(pygame.sprite.Sprite):
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        # Set random angle for movement (0-360 degrees)
-        angle_deg = random.uniform(0, 360)
+        # Set random angle for movement (0-180 degrees - downward only)
+        angle_deg = random.uniform(0, 180)
         angle_rad = math.radians(angle_deg)
         # Calculate velocity components
         self.velocity = pygame.math.Vector2(

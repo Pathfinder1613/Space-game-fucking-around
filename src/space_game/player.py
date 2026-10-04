@@ -26,6 +26,10 @@ class Player(pygame.sprite.Sprite):
         self.laser_shoot_time = 0
         self.cooldown_duration = 0.8
 
+        # mask for collision detection
+        self.mask = pygame.mask.from_surface(self.image)
+        
+
         # health tracking
         self.max_health = 100
         self.current_health = self.max_health

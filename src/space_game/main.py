@@ -17,12 +17,36 @@ SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 STAR_COUNT = 64
 
-
 def setup_display(width: int, height: int) -> Surface:
     pygame.display.set_caption("Space Game")
     display = pygame.display.set_mode((width, height))
     return display
 
+def handle_collisions(player, laser_sprites, meteor_sprites, score):
+    """Handle collisions between lasers and meteors, and between player and meteors."""
+
+    # Collision detection between lasers and meteors
+    for laser in laser_sprites:
+        collided_meteors = pygame.sprite.spritecollide(
+            laser,
+            meteor_sprites,
+            True
+        )
+
+        if collided_meteors:
+            laser.kill()
+            score += len(collided_meteors)
+
+    # Collision detection between player and meteors
+    if pygame.sprite.spritecollide(
+        player,
+        meteor_sprites,
+        True,
+        pygame.sprite.collide_mask
+    ):
+        player.take_damage(25)
+
+    return score
 
 def main() -> None:
     """Main game loop for the space game."""
@@ -75,33 +99,24 @@ def main() -> None:
         # Game logic updates
         player.update(dt, laser_sprites)
         laser_sprites.update(dt)
-
         # Update the starry background
         stars_background.update(dt)
-
         # Meteor spawning
         meteor_spawner.update(dt)
-
         # Update meteor sprites
         meteor_sprites.update(dt)
-
-        # collision detection between lasers and meteors
-        for laser in laser_sprites:
-            collided_meteors = pygame.sprite.spritecollide(laser, meteor_sprites, True)  # Remove meteors on collision
-            if collided_meteors:
-                laser.kill()  # Remove the laser if it hits a meteor
-                score += 1 * len(collided_meteors)  # Add points for each meteor destroyed
-
-        # collision detection between player and meteors
-        if pygame.sprite.spritecollide(player, meteor_sprites, True):  # Remove meteors on collision
-            player.take_damage(25)  # Take 25 damage per hit
+        # Handle collisions and update score
+        score = handle_collisions(player, laser_sprites, meteor_sprites, score)
 
         # Drawing / rendering
         screen.fill((0, 0, 0))  # Fill the screen with black
         # Draw the starry backgroundaaa
         stars_background.draw(screen)
+
+
         # Draw all sprites
         all_sprites.draw(screen)
+        # note where drawing laser and meteor twice may be redundant since they are already part of all_sprites
         # Draw laser sprites
         laser_sprites.draw(screen)
         # Draw meteor sprites

@@ -11,6 +11,7 @@ class Laser(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(midbottom=pos)
         self.speed = -500  # Negative speed to move upwards
         # self.player_surf = pygame.image.load(join("assets", "images", "player.png")).convert_alpha()
+        
 
     def update(self, dt):
         """Update the laser's position based on its speed and delta time."""

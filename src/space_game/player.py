@@ -3,7 +3,7 @@ from os.path import join
 from space_game.laser import Laser
 
 class Player(pygame.sprite.Sprite):
-    """Player spaceship controlled by a/d arrow keys."""
+    """Player spaceship controlled by a/d/w/s or arrow keys."""
 
     def __init__(self, screen_width, screen_height):
         super().__init__()
@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0, 0)
         self.speed = 300.0
         self.screen_width = screen_width
+        self.screen_height = screen_height
 
         # cooldown timer for shooting
         self.can_shoot = True
@@ -29,19 +30,6 @@ class Player(pygame.sprite.Sprite):
         self.max_health = 100
         self.current_health = self.max_health
         self.invulnerable_timer = 0  # For invulnerability after taking damage
-
-    def handle_event(self, event):
-        """Handle keyboard events for movement."""
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_a:
-                self.direction.x -= 1
-            elif event.key == pygame.K_d:
-                self.direction.x += 1
-        elif event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
-                self.direction.x += 1
-            elif event.key == pygame.K_d:
-                self.direction.x -= 1
 
     def laser_timer(self):
         """Update the shooting cooldown timer."""
@@ -59,8 +47,20 @@ class Player(pygame.sprite.Sprite):
                 print("Game Over!")  # Handle game over logic
 
     def update(self, dt, laser_sprites):
-        """Update player position based on direction and delta time."""
-        # Normalize direction to prevent faster diagonal movement (though we only have horizontal)
+        """Update player position based on currently pressed keys and delta time."""
+        # Calculate direction from currently pressed keys
+        self.direction = pygame.math.Vector2(0, 0)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            self.direction.x -= 1
+        if keys[pygame.K_d]:
+            self.direction.x += 1
+        if keys[pygame.K_w]:
+            self.direction.y -= 1
+        if keys[pygame.K_s]:
+            self.direction.y += 1
+
+        # Normalize direction to prevent faster diagonal movement
         if self.direction.length() > 0:
             self.direction = self.direction.normalize()
         # Move the player
@@ -70,11 +70,18 @@ class Player(pygame.sprite.Sprite):
             self.pos.x = 0
         elif self.pos.x > self.screen_width - self.width:
             self.pos.x = self.screen_width - self.width
+
+        # Vertical boundary checking
+        if self.pos.y < 0:
+            self.pos.y = 0
+        elif self.pos.y > self.screen_height - self.height:
+            self.pos.y = self.screen_height - self.height
+
         # Update rect position
         self.rect.center = self.pos
 
-        recent_keys = pygame.key.get_pressed()
-        if recent_keys[pygame.K_SPACE] and self.can_shoot:
+        # Handle shooting
+        if keys[pygame.K_SPACE] and self.can_shoot:
             self.can_shoot = False
             self.laser_shoot_time = pygame.time.get_ticks()
             laser = Laser(self.laser_surf, self.rect.midtop, laser_sprites)
@@ -89,6 +96,7 @@ class Player(pygame.sprite.Sprite):
     def set_position(self, x, y):
         """Set the player's position."""
         self.rect.center = (x, y)
+        self.pos = pygame.math.Vector2((x, y))
 
     def draw(self, screen):
         """Draw the player on the given screen."""

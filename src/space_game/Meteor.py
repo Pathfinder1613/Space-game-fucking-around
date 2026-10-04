@@ -15,18 +15,18 @@ class Meteor(pygame.sprite.Sprite):
 
         self.rotation_rate = random.normalvariate(0, 20)
         self.rotation = float(0)
-        self.speed = 200  # Base speed
+        self.speed = 200  # Base speed in pixels per second
 
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        # Set random angle for movement (0-180 degrees - downward only)
-        angle_deg = random.uniform(0, 180)
+        # Set random angle for movement (0 to 100 degrees - downward only in pygame coordinates)
+        angle_deg = random.uniform(0, -100)
         angle_rad = math.radians(angle_deg)
-        # Calculate velocity components
+        # Calculate velocity components (note: negate y for pygame coordinates where y increases downward)
         self.velocity = pygame.math.Vector2(
             math.cos(angle_rad) * self.speed,
-            math.sin(angle_rad) * self.speed
+            -math.sin(angle_rad) * self.speed
         )
         # Use float-based position for smooth movement
         self.position = pygame.math.Vector2(self.rect.center)
@@ -36,7 +36,9 @@ class Meteor(pygame.sprite.Sprite):
         # Store center before scaling
         old_center = self.rect.center
         # Scale the image
-        self.image = pygame.transform.scale(self.image, (int(self.rect.width * scale_factor), int(self.rect.height * scale_factor)))
+        new_width = int(self.rect.width * scale_factor)
+        new_height = int(self.rect.height * scale_factor)
+        self.image = pygame.transform.scale(self.image, (new_width, new_height))
         # Update rect to match new image size, preserving center
         self.rect = self.image.get_rect()
         self.rect.center = old_center

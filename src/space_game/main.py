@@ -66,8 +66,6 @@ def main() -> None:
             if event.type == pygame.QUIT:
                 running = False
             else:
-                # Pass events to the player for handling
-                player.handle_event(event)
                 # Pass events to the UI manager
                 game_ui.process_event(event)
 

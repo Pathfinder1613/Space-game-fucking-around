@@ -9,7 +9,12 @@ class GameUI:
         """Initialize the UI manager and create UI elements."""
         self.ui_manager = pygame_gui.UIManager((screen_width, screen_height))
         # Load UI theme for better visuals
-        self.ui_manager.get_theme().load_theme(join("assets", "ui_theme.json"))
+        try:
+            self.ui_manager.get_theme().load_theme(join("assets", "ui_theme.json"))
+        except FileNotFoundError:
+            print("Warning: ui_theme.json not found, using default theme")
+        except Exception as e:
+            print(f"Error loading ui_theme.json: {e}")
 
         # Score label (can remain as text)
         self.score_label = pygame_gui.elements.UILabel(
@@ -50,6 +55,20 @@ class GameUI:
     def update(self, dt, score, player_health, player_max_health,
                player_can_shoot, player_laser_shoot_time, player_cooldown_duration):
         """Update all UI elements with current game state."""
+        # Validate input parameters
+        if dt < 0:
+            dt = 0
+        if score < 0:
+            score = 0
+        if player_health < 0:
+            player_health = 0
+        if player_max_health <= 0:
+            player_max_health = 1  # Prevent division by zero
+        if player_health > player_max_health:
+            player_health = player_max_health
+        if player_cooldown_duration <= 0:
+            player_cooldown_duration = 0.1  # Prevent division by zero
+
         self.ui_manager.update(dt)
 
         # Update score display
@@ -69,8 +88,8 @@ class GameUI:
             elapsed = (current_time - player_laser_shoot_time) / 1000
             remaining = max(0, player_cooldown_duration - elapsed)
             cooldown_percentage = (remaining / player_cooldown_duration) * 100
-            # Invert the progress bar so it empties as cooldown progresses
-            self.cooldown_bar.set_current_progress(100 - cooldown_percentage)
+            # Show remaining cooldown directly (0% when ready, 100% when on cooldown)
+            self.cooldown_bar.set_current_progress(cooldown_percentage)
 
     def draw(self, screen):
         """Draw all UI elements to the screen."""

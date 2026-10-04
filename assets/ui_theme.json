@@ -40,7 +40,7 @@
     "#cooldown_bar": {
         "bar_height": 20,
         "filled_bar": {
-            "colour": "#FFFF00"
+            "colour": "#0000FF"
         },
         "unfilled_bar": {
             "colour": "#404000"

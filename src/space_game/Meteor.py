@@ -17,12 +17,11 @@ class Meteor(pygame.sprite.Sprite):
         self.rotation = float(0)
         self.speed = 200  # Base speed
 
-        # self.spawn_amount = 5  # Number of meteors to spawn
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        # Set random angle for movement (0-90 degrees)
-        angle_deg = random.uniform(0, 260)
+        # Set random angle for movement (0-360 degrees)
+        angle_deg = random.uniform(0, 360)
         angle_rad = math.radians(angle_deg)
         # Calculate velocity components
         self.velocity = pygame.math.Vector2(
@@ -34,11 +33,15 @@ class Meteor(pygame.sprite.Sprite):
 
         # Set random scale for the meteor
         scale_factor = random.uniform(0.5, 1.5)
+        # Store center before scaling
+        old_center = self.rect.center
         # Scale the image
         self.image = pygame.transform.scale(self.image, (int(self.rect.width * scale_factor), int(self.rect.height * scale_factor)))
-        # randomly rotate the meteor
+        # Update rect to match new image size, preserving center
+        self.rect = self.image.get_rect()
+        self.rect.center = old_center
+        # Set initial random rotation
         self.rotation = random.uniform(0, 360)
-        self.image = pygame.transform.rotate(self.original_image, self.rotation)
 
     def update(self, dt):
         """Update the meteor's position based on its velocity and delta time."""
@@ -48,12 +51,15 @@ class Meteor(pygame.sprite.Sprite):
 
         self.rotation += self.rotation_rate * dt
 
-        # rotate the meteor slowly
-        self.image = pygame.transform.rotate(self.original_image, self.rotation)  
-
+        # rotate the meteor slowly using original image to avoid quality loss
+        self.image = pygame.transform.rotate(self.original_image, self.rotation)
+        self.rect = self.image.get_rect(center=self.rect.center)
 
         # check if meteor is off the screen and remove it
-        if (self.rect.top > self.screen_height):
+        if (self.rect.top > self.screen_height or
+            self.rect.bottom < 0 or
+            self.rect.left > self.screen_width or
+            self.rect.right < 0):
             self.kill()
 
 

@@ -8,7 +8,7 @@ from pygame.sprite import Group
 from pygame.math import Vector2
 
 class Star(Sprite):
-    def __init__(self: Star, image: Surface, position: Vector2, screen_height: int):
+    def __init__(self: Star, image: Surface, position: Vector2, screen_width: int, screen_height: int):
         super().__init__()
 
         size = random.randint(8, 16)
@@ -17,6 +17,7 @@ class Star(Sprite):
         self.rect = image.get_rect(center = position)
         self.position = Vector2(self.rect.center)
         self.speed = float(20) + (size - 8) * 2  # Reduced range: 20-36 instead of 16-80
+        self.screen_width = screen_width
         self.screen_height = screen_height
 
     def update(self: Star, delta: float):
@@ -40,6 +41,7 @@ class StarBackground:
             self.star_sprites.add(Star(self.star_sprite,
                                      (random.randint(0, self.screen_width),
                                       random.randint(0, self.screen_height)),
+                                     self.screen_width,
                                      self.screen_height))
 
     def update(self: StarBackground, delta: float):

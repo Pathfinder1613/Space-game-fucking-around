@@ -21,7 +21,7 @@
     "#health_bar": {
         "bar_height": 20,
         "filled_bar": {
-            "colour": "#F34336"
+            "colour": "#FF0000"
         },
         "unfilled_bar": {
             "colour": "#400000"

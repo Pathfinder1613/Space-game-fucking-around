@@ -26,11 +26,23 @@ class Meteor(pygame.sprite.Sprite):
         # Use float-based position for smooth movement
         self.position = pygame.math.Vector2(self.rect.center)
 
+        # Set random scale for the meteor
+        scale_factor = random.uniform(0.5, 1.5)
+        # Scale the image
+        self.image = pygame.transform.scale(self.image, (int(self.rect.width * scale_factor), int(self.rect.height * scale_factor)))
+        # randomly rotate the meteor
+        self.image = pygame.transform.rotate(self.image, random.uniform(0, 360))
+
+
     def update(self, dt):
         """Update the meteor's position based on its velocity and delta time."""
         # Move based on velocity
         self.position += self.velocity * dt
         self.rect.center = self.position
+
+        # rotate the meteor slowly
+        self.image = pygame.transform.rotate(self.image, 0.1 * dt)  
+
 
         # check if meteor is off the screen and remove it
         if (self.rect.top > self.screen_height):

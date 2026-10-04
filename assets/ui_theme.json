@@ -1,7 +1,7 @@
 {
     "#score_label": {
         "font": {
-            "name": "arial",
+            "name": "Oxanium-Bold",
             "size": 24,
             "bold": true
         },
@@ -12,7 +12,7 @@
     },
     "#health_label_text": {
         "font": {
-            "name": "arial",
+            "name": "Oxanium-Bold",
             "size": 20,
             "bold": true
         },
@@ -31,7 +31,7 @@
     },
     "#cooldown_label_text": {
         "font": {
-            "name": "arial",
+            "name": "Oxanium-Bold",
             "size": 20,
             "bold": true
         },

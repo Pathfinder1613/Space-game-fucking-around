@@ -28,15 +28,17 @@ class Star(Sprite):
 
 class StarBackground:
     def __init__(self: StarBackground, stars: int, speed_multiplier: float = 1):
-        self.star_sprite = pygame.image.load(join("assets", "images", "star.png")).convert_alpha()
-        self.star_sprite = pygame.transform.scale(self.star_sprite, (16, 16))
+        self.star_image = pygame.image.load(join("assets", "images", "star.png")).convert_alpha()
+        self.star_image = pygame.transform.scale(self.star_image, (16, 16))
+        
         self.star_sprites = Group()
         self.speed_multiplier = speed_multiplier
+        
         self.generate_stars(stars)
 
     def generate_stars(self: StarBackground, amount: int):
         for i in range(amount):
-            self.star_sprites.add(Star(self.star_sprite, (random.randint(0, 1280), random.randint(0, 720))))
+            self.star_sprites.add(Star(self.star_image, (random.randint(0, 1280), random.randint(0, 720))))
 
     def update(self: StarBackground, delta: float):
         self.star_sprites.update(delta * self.speed_multiplier)

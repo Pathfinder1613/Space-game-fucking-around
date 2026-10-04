@@ -45,7 +45,7 @@ def main() -> None:
     player = Player(screen.width, screen.height)
     all_sprites.add(player)
     # Create the starry background
-    stars_background = StarBackground(64)
+    stars_background = StarBackground(128, 4)
     # Create the meteor spawner
     meteor_spawner = MeteorSpawner(screen.width, screen.height, meteor_image, meteor_sprites, all_sprites)
 

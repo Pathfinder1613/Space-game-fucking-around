@@ -23,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         # cooldown timer for shooting
         self.can_shoot = True
         self.laser_shoot_time = 0
-        self.cooldown_duration = 0.8
+        self.cooldown_duration = 0.5
 
         # health tracking
         self.max_health = 100

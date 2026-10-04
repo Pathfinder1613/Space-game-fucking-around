@@ -14,6 +14,7 @@ class Star(Sprite):
         size = random.randint(8, 16)
 
         self.image = pygame.transform.scale(image, (size, size))
+
         self.rect = image.get_rect(center = position)
         self.position = Vector2(self.rect.center)
         self.speed = float(16) + (size - 8) * 8

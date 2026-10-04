@@ -72,6 +72,7 @@ def main() -> None:
         player.update(dt, laser_sprites)
         laser_sprites.update(dt)
 
+        # Update the starry background
         stars_background.update(dt)
 
         # Meteor spawning

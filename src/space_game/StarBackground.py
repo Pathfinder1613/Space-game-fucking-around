@@ -26,7 +26,7 @@ class Star(Sprite):
             self.position = Vector2(random.randint(0, 1280), -16)
 
 class StarBackground:
-    def __init__(self: StarBackground, stars: int, speed_multiplier: float):
+    def __init__(self: StarBackground, stars: int, speed_multiplier: float = 1):
         self.star_sprite = pygame.image.load(join("assets", "images", "star.png")).convert_alpha()
         self.star_sprite = pygame.transform.scale(self.star_sprite, (16, 16))
         self.star_sprites = Group()

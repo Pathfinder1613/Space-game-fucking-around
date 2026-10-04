@@ -58,7 +58,7 @@ class Player(pygame.sprite.Sprite):
             if self.current_health <= 0:
                 print("Game Over!")  # Handle game over logic
 
-    def update(self, dt, laser_sprites):
+    def update(self, dt):
         """Update player position based on direction and delta time."""
         # Normalize direction to prevent faster diagonal movement (though we only have horizontal)
         if self.direction.length() > 0:
@@ -77,7 +77,7 @@ class Player(pygame.sprite.Sprite):
         if recent_keys[pygame.K_SPACE] and self.can_shoot:
             self.can_shoot = False
             self.laser_shoot_time = pygame.time.get_ticks()
-            laser = Laser(self.laser_surf, self.rect.midtop, laser_sprites)
+            laser = Laser(self.laser_surf, self.rect.midtop)
 
         self.laser_timer()  # Update the shooting cooldown timer
 

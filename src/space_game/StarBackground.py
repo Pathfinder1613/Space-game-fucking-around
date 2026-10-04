@@ -8,8 +8,10 @@ from pygame.sprite import Group
 from pygame.math import Vector2
 
 class Star(Sprite):
+    SPRITES = Group()
+
     def __init__(self: Star, image: Surface, position: Vector2):
-        super().__init__()
+        super().__init__(self.SPRITES)
 
         size = random.randint(8, 16)
 

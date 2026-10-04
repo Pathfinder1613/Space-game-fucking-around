@@ -11,13 +11,12 @@ from space_game.ui import GameUI
 from pygame.surface import Surface
 from pygame.sprite import Group
 
+from space_game.globals import ALL_SPRITES
+
 def setup_display(width: int, height: int) -> Surface:
     pygame.display.set_caption("Space Game")
     display = pygame.display.set_mode((width, height))
     return display
-
-
-SPRITEGROUP_ALL = Group()
 
 def main() -> None:
     """Main game loop for the space game."""
@@ -35,17 +34,13 @@ def main() -> None:
     # Clock to control the frame rate
     clock = pygame.time.Clock()
 
-    # Create sprite groups
-    laser_sprites = pygame.sprite.Group()
-    meteor_sprites = pygame.sprite.Group()
-
     # Create the player
     player = Player(screen.width, screen.height)
-    SPRITEGROUP_ALL.add(player)
+    ALL_SPRITES.add(player)
     # Create the starry background
     stars_background = StarBackground(128, 4)
     # Create the meteor spawner
-    meteor_spawner = MeteorSpawner(screen.width, screen.height, meteor_sprites, SPRITEGROUP_ALL)
+    meteor_spawner = MeteorSpawner(screen.width, screen.height, Meteor.SPRITES, ALL_SPRITES)
 
     # Variable to see the score
     score = 0
@@ -67,8 +62,8 @@ def main() -> None:
         delta = clock.tick(60) / 1000  # Amount of seconds between each loop
 
         # Game logic updates
-        player.update(delta, laser_sprites)
-        laser_sprites.update(delta)
+        player.update(delta)
+        Laser.SPRITES.update(delta)
 
         # Update the starry background
         stars_background.update(delta)
@@ -81,24 +76,24 @@ def main() -> None:
         # Draw the starry background
         stars_background.draw(screen)
         # Draw all sprites
-        SPRITEGROUP_ALL.draw(screen)
+        ALL_SPRITES.draw(screen)
         # Draw laser sprites
-        laser_sprites.draw(screen)
+        Laser.SPRITES.draw(screen)
         # Draw meteor sprites
-        meteor_sprites.draw(screen)
+        Meteor.SPRITES.draw(screen)
 
         # collision detection between lasers and meteors
-        for laser in laser_sprites:
-            collided_meteors = pygame.sprite.spritecollide(laser, meteor_sprites, True)  # Remove meteors on collision
+        for laser in Laser.SPRITES:
+            collided_meteors = pygame.sprite.spritecollide(laser, Meteor.SPRITES, True)  # Remove meteors on collision
             if collided_meteors:
                 laser.kill()  # Remove the laser if it hits a meteor
                 score += 1 * len(collided_meteors)  # Add points for each meteor destroyed
 
         # collision detection between player and meteors
-        if pygame.sprite.spritecollide(player, meteor_sprites, True):  # Remove meteors on collision
+        if pygame.sprite.spritecollide(player, Meteor.SPRITES, True):  # Remove meteors on collision
             player.take_damage(25)  # Take 25 damage per hit
 
-        meteor_sprites.update(delta, screen)
+        Meteor.SPRITES.update(delta, screen)
 
         # Update UI elements
         game_ui.update(

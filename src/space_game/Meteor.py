@@ -6,12 +6,15 @@ from os.path import join
 from pygame.surface import Surface
 from pygame.sprite import Sprite
 from pygame.math import Vector2
+from pygame.sprite import Group
+
+from space_game.globals import ALL_SPRITES
 
 class Meteor(Sprite):
-    """Class representing a meteor in the space game."""
+    SPRITES = Group()
 
     def __init__(self: Meteor, image: Surface, position: Vector2):
-        super().__init__()
+        super().__init__(self.SPRITES, ALL_SPRITES)
 
         scale = 1 + random.uniform(-0.25, 0.25)
         self.original_image = pygame.transform.scale_by(image, scale)

@@ -26,10 +26,11 @@ class Star(Sprite):
             self.position = Vector2(random.randint(0, 1280), -16)
 
 class StarBackground:
-    def __init__(self: StarBackground, stars: int):
+    def __init__(self: StarBackground, stars: int, speed_multiplier: float):
         self.star_sprite = pygame.image.load(join("assets", "images", "star.png")).convert_alpha()
         self.star_sprite = pygame.transform.scale(self.star_sprite, (16, 16))
         self.star_sprites = Group()
+        self.speed_multiplier = speed_multiplier
         self.generate_stars(stars)
 
     def generate_stars(self: StarBackground, amount: int):
@@ -37,7 +38,7 @@ class StarBackground:
             self.star_sprites.add(Star(self.star_sprite, (random.randint(0, 1280), random.randint(0, 720))))
 
     def update(self: StarBackground, delta: float):
-        self.star_sprites.update(delta)
+        self.star_sprites.update(delta * self.speed_multiplier)
         pass
 
     def draw(self: StarBackground, screen: Surface):

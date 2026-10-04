@@ -1,0 +1,51 @@
+{
+    "#score_label": {
+        "font": {
+            "name": "arial",
+            "size": 24,
+            "bold": true
+        },
+        "text_colour": "#00FF00",
+        "bg_colour": "#000000",
+        "border_width": 2,
+        "border_colour": "#00FF00"
+    },
+    "#health_label_text": {
+        "font": {
+            "name": "arial",
+            "size": 20,
+            "bold": true
+        },
+        "text_colour": "#FFFFFF"
+    },
+    "#health_bar": {
+        "bar_height": 20,
+        "filled_bar": {
+            "colour": "#FF0000"
+        },
+        "unfilled_bar": {
+            "colour": "#400000"
+        },
+        "border_width": 2,
+        "border_colour": "#FFFFFF"
+    },
+    "#cooldown_label_text": {
+        "font": {
+            "name": "arial",
+            "size": 20,
+            "bold": true
+        },
+        "text_colour": "#FFFFFF"
+    },
+    "#cooldown_bar": {
+        "bar_height": 20,
+        "filled_bar": {
+            "colour": "#FFFF00"
+        },
+        "unfilled_bar": {
+            "colour": "#404000"
+        },
+        "border_width": 2,
+        "border_colour": "#FFFFFF"
+    }
+}

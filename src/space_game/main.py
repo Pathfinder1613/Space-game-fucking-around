@@ -41,7 +41,7 @@ def main() -> None:
     all_sprites.add(player)
 
     # Create the starry background
-    # stars_background = StarBackground(screen.width, screen.height)
+    stars_background = StarBackground()
     # Create the meteor spawner
     meteor_spawner = MeteorSpawner(screen.width, screen.height, meteor_image, meteor_sprites, all_sprites)
 
@@ -63,6 +63,8 @@ def main() -> None:
         player.update(dt, laser_sprites)
         laser_sprites.update(dt)
 
+        stars_background.update(dt)
+
         # Meteor spawning
         meteor_spawner.update(dt)
 
@@ -72,7 +74,7 @@ def main() -> None:
         # Drawing / rendering
         screen.fill((0, 0, 0))  # Fill the screen with black
         # Draw the starry background
-        # stars_background.draw(screen)
+        stars_background.draw(screen)
         # Draw all sprites
         all_sprites.draw(screen)
         # Draw laser sprites

@@ -8,9 +8,15 @@ class Meteor(pygame.sprite.Sprite):
 
     def __init__(self, surf, pos, group, screen_width, screen_height):
         super().__init__(group)
+        self.original_image = surf
+
         self.image = surf
         self.rect = self.image.get_rect(midbottom=pos)
+
+        self.rotation_rate = random.normalvariate(0, 20)
+        self.rotation = float(0)
         self.speed = 200  # Base speed
+
         # self.spawn_amount = 5  # Number of meteors to spawn
         self.screen_width = screen_width
         self.screen_height = screen_height
@@ -31,8 +37,8 @@ class Meteor(pygame.sprite.Sprite):
         # Scale the image
         self.image = pygame.transform.scale(self.image, (int(self.rect.width * scale_factor), int(self.rect.height * scale_factor)))
         # randomly rotate the meteor
-        self.image = pygame.transform.rotate(self.image, random.uniform(0, 360))
-
+        self.rotation = random.uniform(0, 360)
+        self.image = pygame.transform.rotate(self.original_image, self.rotation)
 
     def update(self, dt):
         """Update the meteor's position based on its velocity and delta time."""
@@ -40,8 +46,10 @@ class Meteor(pygame.sprite.Sprite):
         self.position += self.velocity * dt
         self.rect.center = self.position
 
+        self.rotation += self.rotation_rate * dt
+
         # rotate the meteor slowly
-        self.image = pygame.transform.rotate(self.image, 0.1 * dt)  
+        self.image = pygame.transform.rotate(self.original_image, self.rotation)  
 
 
         # check if meteor is off the screen and remove it

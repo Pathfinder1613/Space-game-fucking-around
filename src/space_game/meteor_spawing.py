@@ -7,14 +7,11 @@ from .Meteor import Meteor
 from pygame.sprite import Group
 
 class MeteorSpawner:
-    def __init__(self: MeteorSpawner, screen_width: int, screen_height: int, meteor_sprites: Group, all_sprites: Group):
+    def __init__(self: MeteorSpawner, screen_width: int, screen_height: int):
         self.screen_width = screen_width
         self.screen_height = screen_height
 
         self.meteor_image = pygame.image.load(join("assets", "images", "meteor.png")).convert_alpha()
-
-        self.meteor_sprites = meteor_sprites
-        self.all_sprites = all_sprites
 
         self.spawn_timer = float(0)
         self.spawn_interval = float(1)
@@ -28,7 +25,4 @@ class MeteorSpawner:
 
     def spawn_meteors(self: MeteorSpawner, amount: int):
         for _ in range(amount):
-            meteor = Meteor(self.meteor_image, (random.randint(20, self.screen_width - 20), -64))
-            
-            self.meteor_sprites.add(meteor)
-            self.all_sprites.add(meteor)
+            Meteor(self.meteor_image, (random.randint(20, self.screen_width - 20), -64))

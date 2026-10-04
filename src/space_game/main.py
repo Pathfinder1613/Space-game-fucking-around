@@ -40,7 +40,7 @@ def main() -> None:
     # Create the starry background
     stars_background = StarBackground(128, 4)
     # Create the meteor spawner
-    meteor_spawner = MeteorSpawner(screen.width, screen.height, Meteor.SPRITES, ALL_SPRITES)
+    meteor_spawner = MeteorSpawner(screen.width, screen.height)
 
     # Variable to see the score
     score = 0

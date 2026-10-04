@@ -14,7 +14,6 @@ class Meteor(pygame.sprite.Sprite):
         # self.spawn_amount = 5  # Number of meteors to spawn
         self.screen_width = screen_width
         self.screen_height = screen_height
-    
 
         # Set random angle for movement (0-90 degrees)
         angle_deg = random.uniform(0, 260)
@@ -36,5 +35,24 @@ class Meteor(pygame.sprite.Sprite):
         # check if meteor is off the screen and remove it
         if (self.rect.top > self.screen_height):
             self.kill()
+
+            
+
+    # # Meteor spawning
+    #         meteor_spawn_timer += dt
+    #         if meteor_spawn_timer >= meteor_spawn_delay:
+    #             for _ in range(amount_of_meteors):
+    #                 # Spawn a meteor at a random position at the top of the screen
+    #                 meteor_x = random.randint(20, screen_width - 20)  # Keep away from edges
+    #                 meteor_y = -50  # Start slightly above the screen
+    #                 meteor = Meteor(meteor_image, (meteor_x, meteor_y), meteor_sprites, screen_width, screen_height)
+    #                 meteor_sprites.add(meteor)
+    #                 all_sprites.add(meteor)
+    #                 meteor_spawn_timer = 0
+    
+    #         # Update meteor sprites
+    #         meteor_sprites.update(dt)
+
+    
 
     

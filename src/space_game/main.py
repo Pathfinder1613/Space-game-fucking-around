@@ -20,8 +20,6 @@ def main() -> None:
     # Initialize pygame
     pygame.init()
 
-    amount_of_meteors = 5
-
     # Set up the display
     screen = setup_display(1280, 720)
 
@@ -43,9 +41,8 @@ def main() -> None:
     # Create the starry background
     stars_background = StarBackground(screen.width, screen.height)
 
-    # Meteor spawning
-    meteor_spawn_timer = 0
-    meteor_spawn_delay = 1.0  # Spawn a meteor every 1.0 seconds
+    # Create the meteor spawner
+    meteor_spawner = MeteorSpawner(screen_width, screen_height, meteor_image, meteor_sprites, all_sprites)
 
     # Main game loop
     running = True
@@ -96,6 +93,8 @@ def main() -> None:
             collided_meteors = pygame.sprite.spritecollide(laser, meteor_sprites, True)  # Remove meteors on collision
             if collided_meteors:
                 laser.kill()  # Remove the laser if it hits a meteor
+
+        meteor_sprites.update(dt)  # Update meteor positions
 
         # Update the display
         pygame.display.flip()

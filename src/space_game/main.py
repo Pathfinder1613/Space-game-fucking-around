@@ -94,7 +94,7 @@ def main() -> None:
             collided_meteors = pygame.sprite.spritecollide(laser, meteor_sprites, True)  # Remove meteors on collision
             if collided_meteors:
                 laser.kill()  # Remove the laser if it hits a meteor
-                score += 10 * len(collided_meteors)  # Add points for each meteor destroyed
+                score += 1 * len(collided_meteors)  # Add points for each meteor destroyed
 
         # collision detection between player and meteors
         if pygame.sprite.spritecollide(player, meteor_sprites, True):  # Remove meteors on collision

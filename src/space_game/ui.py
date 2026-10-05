@@ -16,7 +16,7 @@ class GameUI:
         except Exception as e:
             print(f"Error loading ui_theme.json: {e}")
 
-        # Load custom font for theme
+        # Load custom font for theme (verification)
         self._load_custom_font_for_theme()
 
         # Score label (can remain as text)
@@ -59,13 +59,10 @@ class GameUI:
         """Load the custom Oxanium-Bold font and make it available for the theme."""
         font_path = join("assets", "images", "Oxanium-Bold.ttf")
         try:
-            # For the theme to work, we need to make sure the font is accessible
-            # We'll create a font object and store it, but the theme will load it by name
-            # Actually, let's just verify the font exists and hope the theme system can load it
+            # Verify the font can be loaded
             test_font = pygame.font.Font(font_path, 24)
             print(f"Successfully loaded custom font from {font_path}")
-            # We don't need to store the font object since the theme will load it
-            # But let's store the path for verification
+            # Store the path for verification
             self.custom_font_path = font_path
         except FileNotFoundError:
             print(f"Error: Custom font not found at {font_path}")

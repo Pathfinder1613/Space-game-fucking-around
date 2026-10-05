@@ -68,7 +68,7 @@ def main() -> None:
 
     # Load and play background music (loop indefinitely)
     pygame.mixer.music.load(join("assets", "audio", "game_music.wav"))
-    pygame.mixer.music.set_volume(0.3)  # Set volume to 30% to avoid overpowering SFX
+    pygame.mixer.music.set_volume(0.01)  # Set volume to 10% to avoid overpowering SFX
     pygame.mixer.music.play(-1)  # -1 means loop indefinitely
 
     # Set up the display

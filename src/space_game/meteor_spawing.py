@@ -23,11 +23,6 @@ class MeteorSpawner:
             self.spawn_meteors(5)  # Spawn 5 meteors at a time
             self.spawn_timer = 0
 
-    def spawn_meteors(self, amount_of_meteors):
-        """Spawn a specified number of meteors at random positions at the top of the screen."""
-        for _ in range(amount_of_meteors):
-            meteor_x = random.randint(20, self.screen_width - 20)  # Keep away from edges
-            meteor_y = 0  # Start at the top of the screen
-            meteor = Meteor(self.meteor_image, (meteor_x, meteor_y), self.meteor_sprites, self.screen_width, self.screen_height)
-            self.meteor_sprites.add(meteor)
-            self.all_sprites.add(meteor)
+    def spawn_meteors(self: MeteorSpawner, amount: int):
+        for _ in range(amount):
+            Meteor(self.meteor_image, (random.randint(20, self.screen_width - 20), -64), self.screen_height)

@@ -9,6 +9,7 @@ from space_game.Meteor import Meteor
 from space_game.meteor_spawing import MeteorSpawner
 from space_game.ui import GameUI
 from space_game.animatedExplosion import AnimatedExplosion
+from space_game.globals import ALL_SPRITES
 
 from pygame.surface import Surface
 from pygame.sprite import Group
@@ -68,9 +69,8 @@ def main() -> None:
     clock = pygame.time.Clock()
 
     # Create sprite groups
-    all_sprites = pygame.sprite.Group()
     laser_sprites = Laser.SPRITES  # Use the class-level laser group
-    meteor_sprites = pygame.sprite.Group()
+    meteor_sprites = Meteor.SPRITES  # Use the class-level meteor group
     explosion_sprites = pygame.sprite.Group()
 
     # Load meteor image once to avoid repeated loading
@@ -82,11 +82,11 @@ def main() -> None:
     ]
     # Create the player
     player = Player(screen_width, screen_height)
-    all_sprites.add(player)
+    ALL_SPRITES.add(player)
     # Create the starry background
     stars_background = StarBackground(STAR_COUNT, screen_width, screen_height)
     # Create the meteor spawner
-    meteor_spawner = MeteorSpawner(screen_width, screen_height, meteor_image, meteor_sprites, all_sprites)
+    meteor_spawner = MeteorSpawner(screen_width, screen_height)
 
     # Variable to see the score
     score = 0
@@ -124,16 +124,14 @@ def main() -> None:
         # Draw the starry background
         stars_background.draw(screen)
 
-        # Draw all sprites
-        all_sprites.draw(screen)
+        # Draw all sprites (includes player, lasers, and meteors)
+        ALL_SPRITES.draw(screen)
         # Draw explosion sprites
         explosion_sprites.draw(screen)
-        # note where drawing laser and meteor twice may be redundant since they are already part of all_sprites
-        # (laser_sprites and meteor_sprites are part of all_sprites, but explosion_sprites is separate)
 
         # Update UI elements
         game_ui.update(
-            delta=delta,
+            dt=delta,
             score=score,
             player_health=player.current_health,
             player_max_health=player.max_health,

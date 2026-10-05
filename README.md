@@ -24,3 +24,5 @@ git worktree list
 
 # Remove worktree when done (after committing or stashing changes)
 git worktree remove ../path/to/worktree
+
+git checkout main

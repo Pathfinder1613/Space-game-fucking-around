@@ -14,8 +14,9 @@ class Laser(Sprite):
 
     def __init__(self, image: Surface, position: Vector2):
         super().__init__(self.SPRITES, ALL_SPRITES)
-        self.image = image
-        self.rect = self.image.get_rect(midbottom=position)
+        self.image = image.copy()
+        self.image.fill((255, 0, 0, 255), special_flags = pygame.BLEND_RGBA_MULT)
+        self.rect = self.image.get_rect(midbottom = position)
         self.speed = float(-500)  # Negative speed to move upwards
 
     def update(self, delta: float):

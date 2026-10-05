@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         # cooldown timer for shooting
         self.can_shoot = True
         self.laser_shoot_time = 0
-        self.cooldown_duration = 0.8
+        self.cooldown_duration = 0.4
 
         # mask for collision detection
         self.mask = pygame.mask.from_surface(self.image)

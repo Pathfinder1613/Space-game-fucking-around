@@ -16,7 +16,7 @@ from pygame.sprite import Group
 # Game constants
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-STAR_COUNT = 64
+STAR_COUNT = 128
 
 def setup_display(width: int, height: int) -> Surface:
     pygame.display.set_caption("Space Game")
@@ -35,10 +35,10 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
         )
 
         if collided_meteors:
-            # Create an animated explosion at the position of the first collided meteor
-            AnimatedExplosion(explosion_frames, collided_meteors[0].rect.center, explosion_sprites)
-            laser.kill()
-            score += len(collided_meteors)
+            for i in range(len(collided_meteors)):
+                AnimatedExplosion(explosion_frames, collided_meteors[i].rect.center, explosion_sprites)
+                laser.kill()
+                score += len(collided_meteors)
 
     # Collision detection between player and meteors
     if pygame.sprite.spritecollide(
@@ -76,14 +76,14 @@ def main() -> None:
     meteor_image = pygame.image.load(join("assets", "images", "meteor.png")).convert_alpha()
     # Load explosion frames
     explosion_frames = [
-        pygame.image.load(join("assets", "images", "explosion", f"{i}.png")).convert_alpha()
+        pygame.transform.scale_by(pygame.image.load(join("assets", "images", "explosion", f"{i}.png")).convert_alpha(), 3)
         for i in range(1, 20)
     ]
     # Create the player
     player = Player(screen_width, screen_height)
     ALL_SPRITES.add(player)
     # Create the starry background
-    stars_background = StarBackground(STAR_COUNT, screen_width, screen_height)
+    stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)
     # Create the meteor spawner
     meteor_spawner = MeteorSpawner(screen_width, screen_height)
 
@@ -114,7 +114,7 @@ def main() -> None:
         # Update meteor sprites
         meteor_sprites.update(delta)
         # Update explosion sprites
-        explosion_sprites.update(delta)
+        explosion_sprites.update(delta * 8)
         # Handle collisions and update score
         score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites)
 

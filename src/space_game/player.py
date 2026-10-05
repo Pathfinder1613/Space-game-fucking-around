@@ -28,7 +28,7 @@ class Player(pygame.sprite.Sprite):
 
         # mask for collision detection
         self.mask = pygame.mask.from_surface(self.image)
-        
+
 
         # health tracking
         self.max_health = 100
@@ -42,15 +42,17 @@ class Player(pygame.sprite.Sprite):
             if (current_time - self.laser_shoot_time) / 1000 >= self.cooldown_duration:
                 self.can_shoot = True
 
-    def take_damage(self, amount):
+    def take_damage(self, amount, damage_sound):
         """Handle player taking damage"""
         if self.invulnerable_timer <= 0:  # Only take damage if not invulnerable
             self.current_health = max(0, self.current_health - amount)
             self.invulnerable_timer = 2.0  # 2 seconds invulnerability
+            if damage_sound:
+                damage_sound.play()
             if self.current_health <= 0:
                 print("Game Over!")  # Handle game over logic
 
-    def update(self, dt, laser_sprites):
+    def update(self, dt, laser_sprites, laser_sound):
         """Update player position based on currently pressed keys and delta time."""
         # Calculate direction from currently pressed keys
         self.direction = pygame.math.Vector2(0, 0)
@@ -89,6 +91,8 @@ class Player(pygame.sprite.Sprite):
             self.can_shoot = False
             self.laser_shoot_time = pygame.time.get_ticks()
             laser = Laser(self.laser_surf, self.rect.midtop)
+            if laser_sound:
+                laser_sound.play()
 
         self.laser_timer()  # Update the shooting cooldown timer
 

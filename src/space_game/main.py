@@ -1,5 +1,4 @@
 import pygame
-import random
 import sys
 from os.path import join
 from space_game.player import Player

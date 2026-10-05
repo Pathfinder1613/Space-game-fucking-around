@@ -33,9 +33,6 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
             meteor_sprites,
             True
         )
-
-        
-
         if collided_meteors:
             # Create an animated explosion at the position of the first collided meteor
             AnimatedExplosion(explosion_frames, collided_meteors[0].rect.center, explosion_sprites)

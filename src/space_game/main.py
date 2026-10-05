@@ -31,7 +31,7 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
         collided_meteors = pygame.sprite.spritecollide(
             laser,
             meteor_sprites,
-            True
+            Trues
         )
 
         if collided_meteors:

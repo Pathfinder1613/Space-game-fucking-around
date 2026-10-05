@@ -1,26 +1,27 @@
 import random
 import pygame
 from os.path import join
+
 from .Meteor import Meteor
 
-class MeteorSpawner:
-    """Class to manage the spawning of meteors in the space game."""
+from pygame.sprite import Group
 
-    def __init__(self, screen_width, screen_height, meteor_image, meteor_sprites, all_sprites):
+class MeteorSpawner:
+    def __init__(self: MeteorSpawner, screen_width: int, screen_height: int):
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.meteor_image = meteor_image
-        self.meteor_sprites = meteor_sprites
-        self.all_sprites = all_sprites
-        self.meteor_spawn_timer = 0
-        self.meteor_spawn_delay = 1.0  # Spawn a meteor every 1.0 seconds
 
-    def update(self, dt):
-        """Update the meteor spawn timer and spawn meteors if needed."""
-        self.meteor_spawn_timer += dt
-        if self.meteor_spawn_timer >= self.meteor_spawn_delay:
+        self.meteor_image = pygame.image.load(join("assets", "images", "meteor.png")).convert_alpha()
+
+        self.spawn_timer = float(0)
+        self.spawn_interval = float(1)
+
+    def update(self: MeteorSpawner, delta: float):
+        self.spawn_timer += delta
+
+        if self.spawn_timer >= self.spawn_interval:
             self.spawn_meteors(5)  # Spawn 5 meteors at a time
-            self.meteor_spawn_timer = 0
+            self.spawn_timer = 0
 
     def spawn_meteors(self, amount_of_meteors):
         """Spawn a specified number of meteors at random positions at the top of the screen."""

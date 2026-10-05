@@ -10,8 +10,8 @@ from space_game.meteor_spawing import MeteorSpawner
 from space_game.ui import GameUI
 from space_game.animatedExplosion import AnimatedExplosion
 
-
 from pygame.surface import Surface
+from pygame.sprite import Group
 
 # Game constants
 SCREEN_WIDTH = 1280
@@ -33,12 +33,13 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
             meteor_sprites,
             True
         )
+
         if collided_meteors:
             # Create an animated explosion at the position of the first collided meteor
             AnimatedExplosion(explosion_frames, collided_meteors[0].rect.center, explosion_sprites)
             laser.kill()
             score += len(collided_meteors)
-            
+
     # Collision detection between player and meteors
     if pygame.sprite.spritecollide(
         player,
@@ -68,7 +69,7 @@ def main() -> None:
 
     # Create sprite groups
     all_sprites = pygame.sprite.Group()
-    laser_sprites = pygame.sprite.Group()
+    laser_sprites = Laser.SPRITES  # Use the class-level laser group
     meteor_sprites = pygame.sprite.Group()
     explosion_sprites = pygame.sprite.Group()
 
@@ -83,7 +84,7 @@ def main() -> None:
     player = Player(screen_width, screen_height)
     all_sprites.add(player)
     # Create the starry background
-    stars_background = StarBackground(64, screen_width, screen_height)
+    stars_background = StarBackground(STAR_COUNT, screen_width, screen_height)
     # Create the meteor spawner
     meteor_spawner = MeteorSpawner(screen_width, screen_height, meteor_image, meteor_sprites, all_sprites)
 
@@ -102,41 +103,37 @@ def main() -> None:
                 game_ui.process_event(event)
 
         # Calculate delta time
-        dt = clock.tick(60) / 1000  # Amount of seconds between each loop
+        delta = clock.tick(60) / 1000  # Amount of seconds between each loop
 
         # Game logic updates
-        player.update(dt, laser_sprites)
-        laser_sprites.update(dt)
+        player.update(delta, laser_sprites)
+        laser_sprites.update(delta)
         # Update the starry background
-        stars_background.update(dt)
+        stars_background.update(delta)
         # Meteor spawning
-        meteor_spawner.update(dt)
+        meteor_spawner.update(delta)
         # Update meteor sprites
-        meteor_sprites.update(dt)
+        meteor_sprites.update(delta)
         # Update explosion sprites
-        explosion_sprites.update(dt)
+        explosion_sprites.update(delta)
         # Handle collisions and update score
         score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites)
 
         # Drawing / rendering
         screen.fill((0, 0, 0))  # Fill the screen with black
-        # Draw the starry backgroundaaa
+        # Draw the starry background
         stars_background.draw(screen)
-
 
         # Draw all sprites
         all_sprites.draw(screen)
         # Draw explosion sprites
         explosion_sprites.draw(screen)
         # note where drawing laser and meteor twice may be redundant since they are already part of all_sprites
-        # Draw laser sprites
-        laser_sprites.draw(screen)
-        # Draw meteor sprites
-        meteor_sprites.draw(screen)
+        # (laser_sprites and meteor_sprites are part of all_sprites, but explosion_sprites is separate)
 
         # Update UI elements
         game_ui.update(
-            dt=dt,
+            delta=delta,
             score=score,
             player_health=player.current_health,
             player_max_health=player.max_health,

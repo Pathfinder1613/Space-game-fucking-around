@@ -88,7 +88,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE] and self.can_shoot:
             self.can_shoot = False
             self.laser_shoot_time = pygame.time.get_ticks()
-            laser = Laser(self.laser_surf, self.rect.midtop, laser_sprites)
+            laser = Laser(self.laser_surf, self.rect.midtop)
 
         self.laser_timer()  # Update the shooting cooldown timer
 

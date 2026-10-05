@@ -1,23 +1,26 @@
 import pygame
-
 from os.path import join
 
-class Laser(pygame.sprite.Sprite):
-    """ Class representing a laser shot by the player in the space game."""
+from pygame.sprite import Sprite
+from pygame.sprite import Group
+from pygame.surface import Surface
+from pygame.math import Vector2
 
-    def __init__(self, surf, pos, group):
-        super().__init__(group)
-        self.image = surf
-        self.rect = self.image.get_rect(midbottom=pos)
-        self.speed = -500  # Negative speed to move upwards
-        # self.player_surf = pygame.image.load(join("assets", "images", "player.png")).convert_alpha()
-        
+from space_game.globals import ALL_SPRITES
 
-    def update(self, dt):
-        """Update the laser's position based on its speed and delta time."""
-        self.rect.y += self.speed * dt
+class Laser(Sprite):
+    """Class representing a laser beam fired by the player."""
+    SPRITES = Group()
+
+    def __init__(self, image: Surface, position: Vector2):
+        super().__init__(self.SPRITES, ALL_SPRITES)
+        self.image = image
+        self.rect = self.image.get_rect(midbottom=position)
+        self.speed = float(-500)  # Negative speed to move upwards
+
+    def update(self, delta: float):
+        """Update the laser's position."""
+        self.rect.y += self.speed * delta
         # Remove the laser if it goes off the top of the screen
         if self.rect.bottom < 0:
             self.kill()
-
-    

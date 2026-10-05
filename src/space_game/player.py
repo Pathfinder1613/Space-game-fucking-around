@@ -42,17 +42,17 @@ class Player(pygame.sprite.Sprite):
             if (current_time - self.laser_shoot_time) / 1000 >= self.cooldown_duration:
                 self.can_shoot = True
 
-    def take_damage(self, amount, damage_sound):
+    def take_damage(self, amount, sound_manager):
         """Handle player taking damage"""
         if self.invulnerable_timer <= 0:  # Only take damage if not invulnerable
             self.current_health = max(0, self.current_health - amount)
             self.invulnerable_timer = 2.0  # 2 seconds invulnerability
-            if damage_sound:
-                damage_sound.play()
+            if sound_manager:
+                sound_manager.play_damage()
             if self.current_health <= 0:
                 print("Game Over!")  # Handle game over logic
 
-    def update(self, dt, laser_sprites, laser_sound):
+    def update(self, dt, laser_sprites, sound_manager):
         """Update player position based on currently pressed keys and delta time."""
         # Calculate direction from currently pressed keys
         self.direction = pygame.math.Vector2(0, 0)
@@ -91,8 +91,8 @@ class Player(pygame.sprite.Sprite):
             self.can_shoot = False
             self.laser_shoot_time = pygame.time.get_ticks()
             laser = Laser(self.laser_surf, self.rect.midtop)
-            if laser_sound:
-                laser_sound.play()
+            if sound_manager:
+                sound_manager.play_laser()
 
         self.laser_timer()  # Update the shooting cooldown timer
 

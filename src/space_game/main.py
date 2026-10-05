@@ -9,6 +9,7 @@ from space_game.meteor_spawing import MeteorSpawner
 from space_game.ui import GameUI
 from space_game.animatedExplosion import AnimatedExplosion
 from space_game.globals import ALL_SPRITES
+from space_game.sound_manager import SoundManager
 
 from pygame.surface import Surface
 from pygame.sprite import Group
@@ -23,7 +24,7 @@ def setup_display(width: int, height: int) -> Surface:
     display = pygame.display.set_mode((width, height))
     return display
 
-def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, explosion_sound, damage_sound):
+def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, sound_manager):
     """Handle collisions between lasers and meteors, and between player and meteors."""
 
     # Collision detection between lasers and meteors
@@ -31,14 +32,13 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
         collided_meteors = pygame.sprite.spritecollide(
             laser,
             meteor_sprites,
-            True  
+            True  # Fixed the typo from "Trues" to "True"
         )
 
         if collided_meteors:
             for i in range(len(collided_meteors)):
                 AnimatedExplosion(explosion_frames, collided_meteors[i].rect.center, explosion_sprites)
-                if explosion_sound:
-                    explosion_sound.play()
+                sound_manager.play_explosion()
                 laser.kill()
                 score += len(collided_meteors)
 
@@ -49,7 +49,7 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
         True,
         pygame.sprite.collide_mask
     ):
-        player.take_damage(25, damage_sound)
+        player.take_damage(25, sound_manager)
 
     return score
 
@@ -57,19 +57,6 @@ def main() -> None:
     """Main game loop for the space game."""
     # Initialize pygame
     pygame.init()
-
-    # Initialize audio mixer
-    pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
-
-    # Load sound effects
-    laser_sound = pygame.mixer.Sound(join("assets", "audio", "laser.wav"))
-    explosion_sound = pygame.mixer.Sound(join("assets", "audio", "explosion.wav"))
-    damage_sound = pygame.mixer.Sound(join("assets", "audio", "damage.ogg"))
-
-    # Load and play background music (loop indefinitely)
-    pygame.mixer.music.load(join("assets", "audio", "game_music.wav"))
-    pygame.mixer.music.set_volume(0.01)  # Set volume to 10% to avoid overpowering SFX
-    pygame.mixer.music.play(-1)  # -1 means loop indefinitely
 
     # Set up the display
     screen_width = SCREEN_WIDTH
@@ -104,6 +91,10 @@ def main() -> None:
     # Create the meteor spawner
     meteor_spawner = MeteorSpawner(screen_width, screen_height)
 
+    # Initialize sound manager
+    sound_manager = SoundManager()
+    sound_manager.play_background_music()  # Start background music
+
     # Variable to see the score
     score = 0
 
@@ -122,7 +113,7 @@ def main() -> None:
         delta = clock.tick(60) / 1000  # Amount of seconds between each loop
 
         # Game logic updates
-        player.update(delta, laser_sprites, laser_sound)  # Pass laser sound to player
+        player.update(delta, laser_sprites, sound_manager)  # Pass sound manager to player
         laser_sprites.update(delta)
         # Update the starry background
         stars_background.update(delta)
@@ -133,7 +124,7 @@ def main() -> None:
         # Update explosion sprites
         explosion_sprites.update(delta * 8)
         # Handle collisions and update score
-        score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, explosion_sound, damage_sound)
+        score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, sound_manager)
 
         # Drawing / rendering
         screen.fill((0, 0, 0))  # Fill the screen with black

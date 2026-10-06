@@ -11,7 +11,7 @@ class MeteorSpawner:
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-        self.meteor_image = pygame.image.load(join("assets", "images", "meteor.png")).convert_alpha()
+        self.meteor_image = pygame.image.load(join("assets", "images", "meteor", "medium.png")).convert_alpha()
 
         self.spawn_timer = float(0)
         self.spawn_interval = float(1)

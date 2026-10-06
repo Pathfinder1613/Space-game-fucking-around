@@ -90,7 +90,7 @@ def main() -> None:
     meteor_sprites = Meteor.SPRITES  # Use the class-level meteor group
     explosion_sprites = pygame.sprite.Group()
 
-    meteor_image = pygame.image.load(join("assets", "images", "meteor.png")).convert_alpha()
+    # meteor_image = pygame.image.load(join("assets", "images", "meteor.png")).convert_alpha()
     # Load explosion frames
     explosion_frames = [
         pygame.transform.scale_by(pygame.image.load(join("assets", "images", "explosion", f"{i}.png")).convert_alpha(), 3)
@@ -171,7 +171,7 @@ def main() -> None:
         if player.current_health <= 0:
                     # Show game over screen using pygame_gui
                     update_ui(game_ui, delta, score, player)
-                    
+
                     game_ui.draw(screen)
                     pygame.display.flip()
 

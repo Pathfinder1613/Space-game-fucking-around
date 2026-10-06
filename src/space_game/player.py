@@ -113,12 +113,16 @@ class Player(pygame.sprite.Sprite):
         """Draw the player on the given screen."""
         screen.blit(self.image, self.rect)
 
-        # fishing effect for invulnerability (flashing) using pygame mask
+        # Flashing effect while invulnerable
         if self.invulnerable_timer > 0:
-            # Create a mask from the player image
-            mask = pygame.mask.from_surface(self.image)
-            # Create a surface to draw the mask
-            mask_surface = mask.to_surface(setcolor=(255, 0, 0, 100), unsetcolor=(0, 0, 0, 0))
-            # Blit the mask surface onto the screen at the player's position
-            screen.blit(mask_surface, self.rect.topleft)
-            
+            # Flash every 100 milliseconds
+            if (pygame.time.get_ticks() // 100) % 2 == 0:
+                mask = pygame.mask.from_surface(self.image)
+                # Turn the mask into a red surface
+                mask_surface = mask.to_surface(
+                    setcolor=(255, 0, 0, 100),
+                    unsetcolor=(0, 0, 0, 0)
+                )
+                # Draw the red mask over the player
+                screen.blit(mask_surface, self.rect.topleft)
+                

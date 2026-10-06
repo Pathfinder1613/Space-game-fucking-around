@@ -43,7 +43,7 @@ class Player(pygame.sprite.Sprite):
             if (current_time - self.laser_shoot_time) / 1000 >= self.cooldown_duration:
                 self.can_shoot = True
 
-    def take_damage(self, amount, sound_manager, game_ui):
+    def take_damage(self, amount, sound_manager):
         """Handle player taking damage"""
         if self.invulnerable_timer <= 0:  # Only take damage if not invulnerable
             self.current_health = max(0, self.current_health - amount)

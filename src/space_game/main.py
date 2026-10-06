@@ -113,31 +113,36 @@ def main() -> None:
 
     # Main game loop
     running = True
+    paused = False
     while running:
         # Event handling
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            else:
-                # Pass events to the UI manager
-                game_ui.process_event(event)
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    paused = not paused
+
+            game_ui.process_event(event)
 
         # Calculate delta time
         delta = clock.tick(60) / 1000  # Amount of seconds between each loop
 
         # Game logic updates
-        player.update(delta, laser_sprites, sound_manager)  # Pass sound manager to player
-        laser_sprites.update(delta)
-        # Update the starry background
-        stars_background.update(delta)
-        # Meteor spawning
-        meteor_spawner.update(delta)
-        # Update meteor sprites
-        meteor_sprites.update(delta)
-        # Update explosion sprites
-        explosion_sprites.update(delta * 8)
-        # Handle collisions and update score
-        score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, sound_manager)
+        if not paused:
+            player.update(delta, laser_sprites, sound_manager)  # Pass sound manager to player
+            laser_sprites.update(delta)
+            # Update the starry background
+            stars_background.update(delta)
+            # Meteor spawning
+            meteor_spawner.update(delta)
+            # Update meteor sprites
+            meteor_sprites.update(delta)
+            # Update explosion sprites
+            explosion_sprites.update(delta * 8)
+            # Handle collisions and update score
+            score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, sound_manager)
 
         # Drawing / rendering
         screen.fill((0, 0, 0))  # Fill the screen with black
@@ -157,6 +162,17 @@ def main() -> None:
 
         # Update the display
         pygame.display.flip()
+
+        # Check for ESC key press to exit the game
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_ESCAPE]:
+            running = False
+
+        #  puse the game  with the P key
+        
+
+
+
 
         if player.current_health <= 0:
                     # Show game over screen using pygame_gui

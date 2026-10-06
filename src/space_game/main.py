@@ -54,6 +54,18 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
 
     return score
 
+def update_ui(game_ui, dt, score, player):
+    """Update the UI elements with the current game state."""
+    game_ui.update(
+        dt=dt,
+        score=score,
+        player_health=player.current_health,
+        player_max_health=player.max_health,
+        player_can_shoot=player.can_shoot,
+        player_laser_shoot_time=player.laser_shoot_time,
+        player_cooldown_duration=player.cooldown_duration
+    )
+
 def main() -> None:
     """Main game loop for the space game."""
     # Initialize pygame
@@ -138,15 +150,7 @@ def main() -> None:
         explosion_sprites.draw(screen)
 
         # Update UI elements
-        game_ui.update(
-            dt=delta,
-            score=score,
-            player_health=player.current_health,
-            player_max_health=player.max_health,
-            player_can_shoot=player.can_shoot,
-            player_laser_shoot_time=player.laser_shoot_time,
-            player_cooldown_duration=player.cooldown_duration
-        )
+        update_ui(game_ui, delta, score, player)
 
         # Draw UI elements on top of everything
         game_ui.draw(screen)
@@ -156,16 +160,7 @@ def main() -> None:
 
         if player.current_health <= 0:
                     # Show game over screen using pygame_gui
-                    # Update main UI one final time to show final state (0% health)
-                    game_ui.update(
-                        dt=delta,
-                        score=score,
-                        player_health=player.current_health,
-                        player_max_health=player.max_health,
-                        player_can_shoot=player.can_shoot,
-                        player_laser_shoot_time=player.laser_shoot_time,
-                        player_cooldown_duration=player.cooldown_duration
-                    )
+                    update_ui(game_ui, delta, score, player)
                     game_ui.draw(screen)
                     pygame.display.flip()
 

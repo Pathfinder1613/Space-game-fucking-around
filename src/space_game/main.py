@@ -19,6 +19,7 @@ from pygame.sprite import Group
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 STAR_COUNT = 128
+unused_troll_variable = "(:"
 
 def setup_display(width: int, height: int) -> Surface:
     pygame.display.set_caption("Space Game")
@@ -87,10 +88,7 @@ def main() -> None:
     meteor_sprites = Meteor.SPRITES  # Use the class-level meteor group
     explosion_sprites = pygame.sprite.Group()
 
-    # Load meteor image once to avoid repeated loading
     meteor_image = pygame.image.load(join("assets", "images", "meteor.png")).convert_alpha()
-    # Troll variable for diagnostic - this is intentionally unused
-    unused_troll_variable = "(:"
     # Load explosion frames
     explosion_frames = [
         pygame.transform.scale_by(pygame.image.load(join("assets", "images", "explosion", f"{i}.png")).convert_alpha(), 3)

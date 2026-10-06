@@ -89,8 +89,7 @@ def main() -> None:
     laser_sprites = Laser.SPRITES  # Use the class-level laser group
     meteor_sprites = Meteor.SPRITES  # Use the class-level meteor group
     explosion_sprites = pygame.sprite.Group()
-
-    meteor_image = pygame.image.load(join("assets", "images", "meteor.png")).convert_alpha()
+    
     # Load explosion frames
     explosion_frames = [
         pygame.transform.scale_by(pygame.image.load(join("assets", "images", "explosion", f"{i}.png")).convert_alpha(), 3)

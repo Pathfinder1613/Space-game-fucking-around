@@ -16,12 +16,12 @@ class SoundManager:
 
         # Load and configure background music
         pygame.mixer.music.load(join("assets", "audio", "game_music.wav"))
-        pygame.mixer.music.set_volume(0.3)  # Background music at 30% volume
+        pygame.mixer.music.set_volume(0.01)  # Background music at 10% volume
 
         # Set sound effect volumes (optional - can adjust if needed)
-        self.laser_sound.set_volume(0.5)
-        self.explosion_sound.set_volume(0.7)
-        self.damage_sound.set_volume(0.6)
+        self.laser_sound.set_volume(0.1)
+        self.explosion_sound.set_volume(0.1)
+        self.damage_sound.set_volume(0.2)
 
     def play_laser(self):
         """Play the laser sound effect."""

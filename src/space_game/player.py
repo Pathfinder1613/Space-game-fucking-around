@@ -47,11 +47,11 @@ class Player(pygame.sprite.Sprite):
         """Handle player taking damage"""
         if self.invulnerable_timer <= 0:  # Only take damage if not invulnerable
             self.current_health = max(0, self.current_health - amount)
-            self.invulnerable_timer = 2.0  # 2 seconds invulnerability
+            self.invulnerable_timer = 2.0  # 2 second invulnerability
             if sound_manager:
                 sound_manager.play_damage()
-            if self.current_health <= 0:
-                print("Game Over!")  # Handle game over logic
+            # ship flashes when invulnerable_timer is active, handled in the draw method using pygame mask 
+
                 
                 
 
@@ -112,3 +112,13 @@ class Player(pygame.sprite.Sprite):
     def draw(self, screen):
         """Draw the player on the given screen."""
         screen.blit(self.image, self.rect)
+
+        # fishing effect for invulnerability (flashing) using pygame mask
+        if self.invulnerable_timer > 0:
+            # Create a mask from the player image
+            mask = pygame.mask.from_surface(self.image)
+            # Create a surface to draw the mask
+            mask_surface = mask.to_surface(setcolor=(255, 0, 0, 100), unsetcolor=(0, 0, 0, 0))
+            # Blit the mask surface onto the screen at the player's position
+            screen.blit(mask_surface, self.rect.topleft)
+            

@@ -2,6 +2,7 @@ import pygame
 from os.path import join
 from space_game.laser import Laser
 
+
 class Player(pygame.sprite.Sprite):
     """Player spaceship controlled by a/d/w/s or arrow keys."""
 
@@ -42,7 +43,7 @@ class Player(pygame.sprite.Sprite):
             if (current_time - self.laser_shoot_time) / 1000 >= self.cooldown_duration:
                 self.can_shoot = True
 
-    def take_damage(self, amount, sound_manager):
+    def take_damage(self, amount, sound_manager, game_ui):
         """Handle player taking damage"""
         if self.invulnerable_timer <= 0:  # Only take damage if not invulnerable
             self.current_health = max(0, self.current_health - amount)
@@ -51,6 +52,8 @@ class Player(pygame.sprite.Sprite):
                 sound_manager.play_damage()
             if self.current_health <= 0:
                 print("Game Over!")  # Handle game over logic
+                
+                
 
     def update(self, dt, laser_sprites, sound_manager):
         """Update player position based on currently pressed keys and delta time."""

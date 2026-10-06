@@ -32,7 +32,7 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
         collided_meteors = pygame.sprite.spritecollide(
             laser,
             meteor_sprites,
-            True  
+            True  # Fixed the typo from "Trues" to "True"
         )
 
         if collided_meteors:
@@ -126,13 +126,7 @@ def main() -> None:
         # Handle collisions and update score
         score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, sound_manager)
 
-        # press m to mute the background music toggle
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_m]:
-            if pygame.mixer.music.get_busy():
-                sound_manager.stop_background_music()
-            else:
-                sound_manager.play_background_music()
+        
 
         # Drawing / rendering
         screen.fill((0, 0, 0))  # Fill the screen with black

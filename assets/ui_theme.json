@@ -47,5 +47,16 @@
         },
         "border_width": 2,
         "border_colour": "#FFFFFF"
+    },
+    "#game_over_label": {
+        "font": {
+            "name": "assets/images/Oxanium-Bold.ttf",
+            "size": 36,
+            "bold": true
+        },
+        "text_colour": "#FF0000",
+        "bg_colour": "#000000",
+        "border_width": 2,
+        "border_colour": "#FF0000"
     }
 }

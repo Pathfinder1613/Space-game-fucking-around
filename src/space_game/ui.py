@@ -55,6 +55,9 @@ class GameUI:
             object_id='#cooldown_bar'
         )
 
+        
+
+
     def _load_custom_font_for_theme(self):
         """Load the custom Oxanium-Bold font and make it available for the theme."""
         font_path = join("assets", "images", "Oxanium-Bold.ttf")

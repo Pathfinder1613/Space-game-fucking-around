@@ -41,3 +41,5 @@ class gameoverScreen:
             manager=self.ui_manager,
             object_id='#quit_button',
         )
+
+    

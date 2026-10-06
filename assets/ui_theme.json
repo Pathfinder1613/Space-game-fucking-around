@@ -58,5 +58,38 @@
         "bg_colour": "#000000",
         "border_width": 2,
         "border_colour": "#FF0000"
+    },
+    "#final_score_label": {
+        "font": {
+            "name": "assets/images/Oxanium-Bold.ttf",
+            "size": 24,
+            "bold": true
+        },
+        "text_colour": "#FFFFFF",
+        "bg_colour": "#000000",
+        "border_width": 2,
+        "border_colour": "#FFFFFF"
+    },
+    "#restart_button": {
+        "font": {
+            "name": "assets/images/Oxanium-Bold.ttf",
+            "size": 24,
+            "bold": true
+        },
+        "text_colour": "#FFFFFF",
+        "bg_colour": "#0000FF",
+        "border_width": 2,
+        "border_colour": "#FFFFFF"
+    },
+    "#quit_button": {
+        "font": {
+            "name": "assets/images/Oxanium-Bold.ttf",
+            "size": 24,
+            "bold": true
+        },
+        "text_colour": "#FFFFFF",
+        "bg_colour": "#FF0000",
+        "border_width": 2,
+        "border_colour": "#FFFFFF"
     }
 }

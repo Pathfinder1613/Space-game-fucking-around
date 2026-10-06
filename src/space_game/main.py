@@ -6,7 +6,8 @@ from space_game.StarBackground import StarBackground
 from space_game.laser import Laser
 from space_game.Meteor import Meteor
 from space_game.meteor_spawing import MeteorSpawner
-from space_game.ui import GameUI
+from space_game.Ui.ui import GameUI
+from space_game.Ui.game_over import gameoverScreen
 from space_game.animatedExplosion import AnimatedExplosion
 from space_game.globals import ALL_SPRITES
 from space_game.sound_manager import SoundManager
@@ -125,6 +126,27 @@ def main() -> None:
         explosion_sprites.update(delta * 8)
         # Handle collisions and update score
         score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, sound_manager)
+
+        if player.current_health <= 0:
+            # Show game over screen using pygame_gui
+            game_over_screen = gameoverScreen(screen_width, screen_height)
+            game_over_screen.score_label.set_text(f'Final Score: {score}')
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    
+
+                # Update the game over screen UI
+                game_over_screen.ui_manager.update(delta)
+
+                # trun of the background music
+                sound_manager.stop_background_music()
+
+                # Draw the game over screen
+                game_over_screen.ui_manager.draw_ui(screen)
+                pygame.display.flip()
 
         
 

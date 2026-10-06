@@ -168,15 +168,10 @@ def main() -> None:
         if keys[pygame.K_ESCAPE]:
             running = False
 
-        #  puse the game  with the P key
-        
-
-
-
-
         if player.current_health <= 0:
                     # Show game over screen using pygame_gui
                     update_ui(game_ui, delta, score, player)
+                    
                     game_ui.draw(screen)
                     pygame.display.flip()
 

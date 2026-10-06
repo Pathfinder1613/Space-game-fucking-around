@@ -16,8 +16,10 @@ from pygame.surface import Surface
 from pygame.sprite import Group
 
 # Game constants
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
+# SCREEN_WIDTH = 1280
+# SCREEN_HEIGHT = 720
+SCREEN_WIDTH = 1920
+SCREEN_HEIGHT = 1080
 STAR_COUNT = 128
 unused_troll_variable = "(:"
 

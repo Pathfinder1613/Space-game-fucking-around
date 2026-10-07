@@ -30,6 +30,7 @@ class pause_meun():
             object_id='#instructions_label'
         )
 
+
     def update(self, dt):
         """Update the UI elements."""
         self.ui_manager.update(dt)

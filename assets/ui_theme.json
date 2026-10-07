@@ -1,15 +1,27 @@
 {
-    "#score_label": {
-        "font": {
-            "name": "oxanium",
-            "size": 24,
-            "bold": true
-        },
-        "text_colour": "#00FF00",
-        "bg_colour": "#000000",
-        "border_width": 2,
-        "border_colour": "#00FF00"
-    },
+    "#score_label":
+     {
+         "colours":
+         {
+             "dark_bg": "#25292e",
+             "normal_text": "#c5cbd8",
+             "text_shadow": "#505050"
+         },
+         "font":
+         {
+             "name": "oxanium",
+             "size": "30",
+             "bold": "0",
+             "italic": "0"
+         },
+         "misc":
+         {
+             "text_shadow": "1",
+             "text_shadow_size": "1",
+             "text_shadow_offset": "0,0"
+         }
+     },
+
     "#health_bar": {
         "colors": {
             "filled_bar": "#00ff00",

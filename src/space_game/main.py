@@ -8,6 +8,7 @@ from space_game.Meteor import Meteor
 from space_game.meteor_spawing import MeteorSpawner
 from space_game.Ui.ui import GameUI
 from space_game.Ui.game_over import gameoverScreen
+from space_game.Ui.pause_meun import pause_meun
 from space_game.animatedExplosion import AnimatedExplosion
 from space_game.globals import ALL_SPRITES
 from space_game.sound_manager import SoundManager
@@ -81,6 +82,7 @@ def main() -> None:
 
     # Initialize UI manager
     game_ui = GameUI(screen_width, screen_height)
+    pause_menu = pause_meun(screen_width, screen_height)
 
     # Clock to control the frame rate
     clock = pygame.time.Clock()
@@ -106,6 +108,8 @@ def main() -> None:
     # Initialize sound manager
     sound_manager = SoundManager()
     sound_manager.play_background_music()  # Start background music
+    # Initialize pause menu
+    pause_menu = pause_meun(screen_width, screen_height)
 
     # Variable to see the score
     score = 0
@@ -113,6 +117,7 @@ def main() -> None:
     # Main game loop
     running = True
     paused = False
+    was_paused = False  # Track previous pause state for sound effects
     while running:
         # Event handling
         for event in pygame.event.get():
@@ -158,6 +163,11 @@ def main() -> None:
 
         # Draw UI elements on top of everything
         game_ui.draw(screen)
+        
+        # Draw pause menu if paused
+        if paused:
+            pause_menu.update(delta)
+            pause_menu.draw(screen)
 
         # Update the display
         pygame.display.flip()
@@ -188,6 +198,8 @@ def main() -> None:
                         # Draw the game over screen
                         game_over_screen.ui_manager.draw_ui(screen)
                         pygame.display.flip()
+
+
 
     # Quit pygame
     pygame.quit()

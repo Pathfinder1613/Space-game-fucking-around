@@ -48,3 +48,12 @@ class gameoverScreen:
             manager=self.ui_manager,
             object_id='#quit_button',
         )
+
+    def update(self, dt):
+            """Update the UI elements."""
+            self.ui_manager.update(dt)
+    
+    def draw(self, screen):
+        """Draw the UI elements to the screen."""
+        self.ui_manager.draw_ui(screen)
+    

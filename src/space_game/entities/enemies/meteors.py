@@ -4,7 +4,7 @@ import random
 import pygame
 from os.path import join
 
-from space_game.globals import ALL_SPRITES
+from space_game.core.globals import ALL_SPRITES
 
 from pygame import Surface
 from pygame.math import Vector2
@@ -44,8 +44,8 @@ class Meteor(Sprite):
         self.speed = 200  # Base speed
         self.screen_height = screen_height
 
-        # Set random angle for movement (0-90 degrees)
-        angle_deg = random.uniform(90, 90) + random.uniform(-45, 45)
+        # Set random angle for movement (45-135 degrees to move downward)
+        angle_deg = random.uniform(45, 135)
         angle_rad = math.radians(angle_deg)
         # Calculate velocity components
         self.velocity = pygame.math.Vector2(
@@ -62,19 +62,24 @@ class Meteor(Sprite):
         if not self.ALLOW_SHATTERING:
             return
 
-        pieces: int = 0
+        # Don't shatter if already the smallest type
+        if self.type == MeteorType.SMALL.value:
+            return
+
+        # Determine the type of pieces to create (one level smaller)
         piece_type: int = self.type - 1
 
-        if (self.type == 0):
-            return
-        elif (self.type == 1):
+        # Determine number of pieces based on meteor size
+        pieces: int = 0
+        if self.type == MeteorType.MEDIUM.value:
             pieces = random.randint(2, 3)
-        elif (self.type == 2):
+        elif self.type == MeteorType.LARGE.value:
             pieces = random.randint(3, 4)
 
-        for i in range(pieces):
+        for _ in range(pieces):
             piece = Meteor(piece_type, self.position, self.screen_height)
 
+            # Give each piece a slight variation in velocity
             piece.velocity = self.velocity.rotate(random.randint(-20, 20))
 
     def update(self: Meteor, delta: float):

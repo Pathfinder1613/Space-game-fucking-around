@@ -1,7 +1,7 @@
 import pygame
 from os.path import join
-from space_game.laser import Laser
-from space_game.ship_repository import ShipData
+from space_game.entities.projectiles.laser import Laser
+from space_game.core.ship_repository import ShipData
 
 
 class Player(pygame.sprite.Sprite):

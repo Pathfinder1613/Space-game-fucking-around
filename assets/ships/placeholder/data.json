@@ -1,0 +1,15 @@
+{
+    "Name": "placeholder",
+    "Attributes": {
+        "Health": 100,
+        "Speed": 300,
+        "FireRate": 0.5
+    },
+    "Weapons": {
+        "left": [10, 4],
+        "right": [20, 4]
+    },
+    "Thrusters": {
+        "main": [15, 23]
+    }
+}

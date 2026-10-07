@@ -22,15 +22,31 @@ class PauseMenu():
 
         # Create pause label
         self.pause_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((screen_width // 2 - 100, screen_height // 2 - 50), (200, 50)),
+            relative_rect=pygame.Rect((screen_width // 2 - 100, screen_height // 2 - 100), (200, 50)),
             text='PAUSED',
             manager=self.ui_manager,
             object_id='#pause_label'
         )
 
+        # Create restart button
+        self.restart_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((screen_width // 2 - 100, screen_height // 2 - 20), (200, 50)),
+            text='RESTART',
+            manager=self.ui_manager,
+            object_id='#restart_button'
+        )
+
+        # Create quit button
+        self.quit_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((screen_width // 2 - 100, screen_height // 2 + 40), (200, 50)),
+            text='QUIT',
+            manager=self.ui_manager,
+            object_id='#quit_button'
+        )
+
         # Create instructions label
         self.instructions_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((screen_width // 2 - 150, screen_height // 2 + 20), (300, 30)),
+            relative_rect=pygame.Rect((screen_width // 2 - 150, screen_height // 2 + 110), (300, 30)),
             text='Press P to Resume',
             manager=self.ui_manager,
             object_id='#instructions_label'

@@ -1,21 +1,21 @@
 import pygame
 import sys
+import pygame_gui
 from os.path import join
-from space_game.player import Player
-from space_game.vfx.stars import StarBackground
-from space_game.laser import Laser
-from space_game.meteors import Meteor
-from space_game.meteors import MeteorSpawner
-from space_game.ui.game_ui import GameUI
-from space_game.ui.game_over_screen import GameOverScreen
-from space_game.ui.pause_menu import PauseMenu
-from space_game.ui.main_menu import MainMenu
-from space_game.vfx.animated_explosion import AnimatedExplosion
-from space_game.sound_manager import SoundManager
-from space_game.ship_repository import ShipRepository
-from space_game.state import GameState
-from space_game.globals import ALL_SPRITES
-from space_game.vfx.thrust_particles import ParticleEmitter
+from space_game.entities.player import Player
+from space_game.entities.stars import StarBackground
+from space_game.entities.projectiles.laser import Laser
+from space_game.entities.enemies.meteors import Meteor
+from space_game.entities.enemies.meteors import MeteorSpawner
+from space_game.Ui.game_ui import GameUI
+from space_game.Ui.game_over_screen import GameOverScreen
+from space_game.Ui.pause_menu import PauseMenu
+from space_game.Ui.main_menu import MainMenu
+from space_game.entities.effects.animated_explosion import AnimatedExplosion
+from space_game.core.globals import ALL_SPRITES
+from space_game.audio.sound_manager import SoundManager
+from space_game.core.ship_repository import ShipRepository
+from space_game.core.state import GameState
 
 from pygame.surface import Surface
 from pygame.sprite import Group
@@ -101,7 +101,6 @@ def main() -> None:
         delta = clock.tick(60) / 1000.0
 
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -137,6 +136,7 @@ def main() -> None:
     # Create the player
     player = Player(screen_width, screen_height, main_menu.ships[main_menu.selected_ship])
     ALL_SPRITES.add(player)
+
     # Create the starry background
     stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)
     # Create the meteor spawner
@@ -150,7 +150,6 @@ def main() -> None:
     sound_manager = SoundManager()
     sound_manager.play_background_music()  # Start background music
     # Initialize pause menu
-    pause_menu = PauseMenu(screen_width, screen_height)
 
     # Variable to see the score
     score = 0
@@ -168,7 +167,21 @@ def main() -> None:
                 if event.key == pygame.K_p:
                     paused = not paused
 
+            # Process events for UI elements
             game_ui.process_event(event)
+            if paused:
+                pause_menu.ui_manager.process_events(event)
+
+                # Handle pause menu button clicks
+                if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == pause_menu.restart_button:
+                        # Restart the game - reset to main menu state
+                        paused = False
+                        main_menu.state = GameState.MAIN_MENU
+                        # Reset game state here if needed
+                    elif event.ui_element == pause_menu.quit_button:
+                        # Quit the game
+                        running = False
 
         # Calculate delta time
         delta = clock.tick(60) / 1000  # Amount of seconds between each loop

@@ -2,10 +2,16 @@ import pygame
 import pygame_gui
 from os.path import join
 
+from pygame_gui.elements import UIProgressBar
+
 
 class ProgressBarWithNoText(pygame_gui.elements.UIProgressBar):
     def status_text(self):
         return ""
+
+class CustomUIProgressBar(UIProgressBar):
+    def status_text(self):
+        pass
 
     
 class GameUI:
@@ -126,19 +132,10 @@ class GameUI:
         # Update score display
         self.score_label.set_text(f'{score}')
 
-        # Update health progress bar (value as percentage)
-        if player_max_health > 0:
-            health_percentage = (player_health / player_max_health) * 100
-            # Clamp percentage between 0 and 100
-            health_percentage = max(0, min(player_max_health, health_percentage))
-            print(
-                f"HP: {player_health}/{player_max_health} "
-                f"({health_percentage:.1f}%)"
-            )
-            self.health_bar.set_current_progress(health_percentage)
-        else:
-            # Fallback if max health is invalid
-            self.health_bar.set_current_progress(0)
+        # manually setting health bar properties
+        self.health_bar.maximum_progress = player_max_health
+        self.health_bar.current_progress = player_health
+        self.health_bar.percent_full = player_health / player_max_health
 
         # Update shooting cooldown progress bar
         if player_can_shoot:

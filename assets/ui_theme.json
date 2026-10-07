@@ -19,20 +19,10 @@
         "text_colour": "#FFFFFF"
     },
     "#health_bar": {
-        "bar_height": 20,
-        "font": {
-            "name": "oxanium",
-            "size": 20,
-            "bold": true
-        },
-        "filled_bar": {
-            "colour": "#FF0000"
-        },
-        "unfilled_bar": {
-            "colour": "#400000"
-        },
-        "border_width": 2,
-        "border_colour": "#FFFFFF"
+        "colors": {
+            "filled_bar": "#00ff00",
+            "unfilled_bar": "#FF0000" 
+        }
     },
     "#cooldown_bar": {
         "colors": {

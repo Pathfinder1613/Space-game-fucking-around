@@ -1,0 +1,1 @@
+# a meteor that bounces of the edges of the screen if it get close to the player 

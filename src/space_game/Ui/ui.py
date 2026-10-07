@@ -7,6 +7,7 @@ class ProgressBarWithNoText(pygame_gui.elements.UIProgressBar):
     def status_text(self):
         return ""
 
+    
 class GameUI:
     """Manages all pygame-gui elements for the space game."""
 

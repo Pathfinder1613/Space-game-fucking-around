@@ -7,10 +7,10 @@ from space_game.entities.stars import StarBackground
 from space_game.entities.projectiles.laser import Laser
 from space_game.entities.enemies.meteors import Meteor
 from space_game.entities.enemies.meteors import MeteorSpawner
-from space_game.ui.game_ui import GameUI
-from space_game.ui.game_over_screen import GameOverScreen
-from space_game.ui.pause_menu import PauseMenu
-from space_game.ui.main_menu import MainMenu
+from space_game.Ui.game_ui import GameUI
+from space_game.Ui.game_over_screen import GameOverScreen
+from space_game.Ui.pause_menu import PauseMenu
+from space_game.Ui.main_menu import MainMenu
 from space_game.entities.effects.animated_explosion import AnimatedExplosion
 from space_game.core.globals import ALL_SPRITES
 from space_game.audio.sound_manager import SoundManager

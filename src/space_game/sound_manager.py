@@ -16,7 +16,7 @@ class SoundManager:
 
         # Load and configure background music
         pygame.mixer.music.load(join("assets", "audio", "game_music.wav"))
-        pygame.mixer.music.set_volume(0.01)  # Background music at 10% volume
+        pygame.mixer.music.set_volume(0.1)  # Background music at 10% volume
 
         # Set sound effect volumes (optional - can adjust if needed)
         self.laser_sound.set_volume(0.1)

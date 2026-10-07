@@ -198,9 +198,7 @@ def main() -> None:
                         # Draw the game over screen
                         game_over_screen.ui_manager.draw_ui(screen)
                         pygame.display.flip()
-
-
-
+                        
     # Quit pygame
     pygame.quit()
     sys.exit()

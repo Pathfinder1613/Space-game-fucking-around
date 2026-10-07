@@ -9,6 +9,7 @@ from space_game.meteor_spawing import MeteorSpawner
 from space_game.Ui.ui import GameUI
 from space_game.Ui.game_over import gameoverScreen
 from space_game.Ui.pause_meun import pause_meun
+from space_game.Ui.main_menu import MainMenu
 from space_game.animatedExplosion import AnimatedExplosion
 from space_game.globals import ALL_SPRITES
 from space_game.sound_manager import SoundManager
@@ -83,9 +84,41 @@ def main() -> None:
     # Initialize UI manager
     game_ui = GameUI(screen_width, screen_height)
     pause_menu = pause_meun(screen_width, screen_height)
+    main_menu = MainMenu(screen)
 
     # Clock to control the frame rate
     clock = pygame.time.Clock()
+
+    # MAIN MENU
+    main_menu = MainMenu(screen)
+    menu_running = True
+
+    while menu_running:
+        delta = clock.tick(60) / 1000.0
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            main_menu.handle_event(event)
+
+        main_menu.update(delta)
+
+        screen.fill((0, 0, 0))
+
+        main_menu.draw()
+
+        pygame.display.flip()
+
+        # Check what the menu wants to do
+        if main_menu.state == "GAME":
+            menu_running = False
+
+        elif main_menu.state == "QUIT":
+            pygame.quit()
+            sys.exit()
 
     # Create sprite groups
     laser_sprites = Laser.SPRITES  # Use the class-level laser group
@@ -198,7 +231,7 @@ def main() -> None:
                         # Draw the game over screen
                         game_over_screen.ui_manager.draw_ui(screen)
                         pygame.display.flip()
-                        
+
     # Quit pygame
     pygame.quit()
     sys.exit()

@@ -2,7 +2,7 @@ import pygame
 import pygame_gui
 from os.path import join
 
-class pause_meun():
+class PauseMenu():
     def __init__(self, screen_width, screen_height):
         """Initialize the pause menu UI elements."""
         self.ui_manager = pygame_gui.UIManager((screen_width, screen_height))
@@ -13,6 +13,12 @@ class pause_meun():
             print("Warning: ui_theme.json not found, using default theme")
         except Exception as e:
             print(f"Error loading ui_theme.json: {e}")
+
+        self.ui_manager.add_font_paths(
+            font_name = "oxanium",
+            regular_path = "assets/fonts/Oxanium-Bold.ttf",
+            bold_path = "assets/fonts/Oxanium-Bold.tff"
+        )
 
         # Create pause label
         self.pause_label = pygame_gui.elements.UILabel(

@@ -1,7 +1,7 @@
 import pygame
 from os.path import join
 from space_game.laser import Laser
-from space_game.ShipRepository import ShipData
+from space_game.ship_repository import ShipData
 
 
 class Player(pygame.sprite.Sprite):
@@ -9,8 +9,6 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, screen_width, screen_height, data: ShipData):
         super().__init__()
-
-
 
         self.player_surf = data.Visual.copy()  # Load your spaceship image here
         self.laser_surf = pygame.image.load(join("assets", "images", "laser.png")).convert_alpha()  # Load laser image

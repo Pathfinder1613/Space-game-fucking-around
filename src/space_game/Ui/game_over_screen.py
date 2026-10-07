@@ -2,7 +2,7 @@ import pygame
 import pygame_gui
 from os.path import join
 
-class gameoverScreen:
+class GameOverScreen:
     def __init__(self, screen_width, screen_height):
         """Initialize the game over screen UI elements."""
         self.ui_manager = pygame_gui.UIManager((screen_width, screen_height))

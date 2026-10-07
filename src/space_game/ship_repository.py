@@ -13,7 +13,7 @@ class ShipData:
 
     def _set_defaults(self: ShipData):
         self.Name = str("Unnamed Ship")
-        self.Visual: Surface = None
+        self.Visual: Surface = Surface((64, 64)).convert_alpha()
 
         self.Health   = int(100)
         self.Speed    = int(300)

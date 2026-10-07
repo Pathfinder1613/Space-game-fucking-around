@@ -2,18 +2,20 @@ import pygame
 import sys
 from os.path import join
 from space_game.player import Player
-from space_game.StarBackground import StarBackground
+from space_game.stars import StarBackground
 from space_game.laser import Laser
-from space_game.Meteor import Meteor
-from space_game.meteor_spawing import MeteorSpawner
-from space_game.Ui.ui import GameUI
-from space_game.Ui.game_over import gameoverScreen
-from space_game.Ui.pause_meun import pause_meun
-from space_game.Ui.main_menu import MainMenu
-from space_game.animatedExplosion import AnimatedExplosion
+from space_game.meteors import Meteor
+from space_game.meteors import MeteorSpawner
+from space_game.ui.game_ui import GameUI
+from space_game.ui.game_over_screen import GameOverScreen
+from space_game.ui.pause_menu import PauseMenu
+from space_game.ui.main_menu import MainMenu
+from space_game.animated_explosion import AnimatedExplosion
 from space_game.globals import ALL_SPRITES
 from space_game.sound_manager import SoundManager
-from space_game.ShipRepository import SHIP_REPOSITORY
+from space_game.ship_repository import ShipRepository
+from space_game.state import GameState
+
 from pygame.surface import Surface
 from pygame.sprite import Group
 
@@ -24,8 +26,6 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 STAR_COUNT = 128
 unused_troll_variable = "(:"
-
-
 
 def setup_display(width: int, height: int) -> Surface:
     pygame.display.set_caption("Space Game")
@@ -44,10 +44,11 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
         )
 
         if collided_meteors:
+            sound_manager.play_explosion()
+            laser.kill()
+
             for i in range(len(collided_meteors)):
                 AnimatedExplosion(explosion_frames, collided_meteors[i].rect.center, explosion_sprites)
-                sound_manager.play_explosion()
-                laser.kill()
                 collided_meteors[i].shatter()
                 score += len(collided_meteors)
 
@@ -84,17 +85,17 @@ def main() -> None:
     screen_height = SCREEN_HEIGHT
     screen = setup_display(screen_width, screen_height)
 
+    ship_repository = ShipRepository()
+
     # Initialize UI manager
     game_ui = GameUI(screen_width, screen_height)
-    pause_menu = pause_meun(screen_width, screen_height)
+    pause_menu = PauseMenu(screen_width, screen_height)
+    main_menu = MainMenu(screen, ship_repository)
 
     # Clock to control the frame rate
     clock = pygame.time.Clock()
 
-    # MAIN MENU
-    main_menu = MainMenu(screen)
     menu_running = True
-
     while menu_running:
         delta = clock.tick(60) / 1000.0
 
@@ -114,10 +115,10 @@ def main() -> None:
         pygame.display.flip()
 
         # Check what the menu wants to do
-        if main_menu.state == "GAME":
+        if main_menu.state == GameState.GAMEPLAY:
             menu_running = False
 
-        elif main_menu.state == "QUIT":
+        elif main_menu.state == GameState.EXITING:
             pygame.quit()
             sys.exit()
 
@@ -132,8 +133,7 @@ def main() -> None:
         for i in range(1, 20)
     ]
     # Create the player
-    selected_ship = main_menu.ships[main_menu.selected_ship]
-    player = Player(screen_width, screen_height, selected_ship)
+    player = Player(screen_width, screen_height, main_menu.ships[main_menu.selected_ship])
     ALL_SPRITES.add(player)
 
     # Create the starry background
@@ -145,7 +145,7 @@ def main() -> None:
     sound_manager = SoundManager()
     sound_manager.play_background_music()  # Start background music
     # Initialize pause menu
-    pause_menu = pause_meun(screen_width, screen_height)
+    pause_menu = PauseMenu(screen_width, screen_height)
 
     # Variable to see the score
     score = 0
@@ -219,7 +219,7 @@ def main() -> None:
             game_ui.draw(screen)
             pygame.display.flip()
 
-            game_over_screen = gameoverScreen(screen_width, screen_height)
+            game_over_screen = GameOverScreen(screen_width, screen_height)
             game_over_screen.score_label.set_text(f'Final Score: {score}')
             while True:
                 for event in pygame.event.get():

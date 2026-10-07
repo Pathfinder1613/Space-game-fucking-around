@@ -1,21 +1,20 @@
-import pygame
+from enum import Enum
 import math
 import random
+import pygame
 from os.path import join
-
-from pygame.sprite import Sprite
-from pygame import Surface
-from pygame.math import Vector2
-from pygame.sprite import Group
 
 from space_game.globals import ALL_SPRITES
 
-from enum import Enum
+from pygame import Surface
+from pygame.math import Vector2
+from pygame.sprite import Group, Sprite
+
 
 class MeteorType(Enum):
     SMALL  = int(0),
     MEDIUM = int(1),
-    LARGE  = int(2),
+    LARGE  = int(2)
 
 class Meteor(Sprite):
     ALLOW_SHATTERING: bool = True
@@ -92,3 +91,22 @@ class Meteor(Sprite):
 
         if (self.rect.top > self.screen_height):
             self.kill()
+
+class MeteorSpawner:
+    def __init__(self: MeteorSpawner, screen_width: int, screen_height: int):
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+
+        self.spawn_timer = float(0)
+        self.spawn_interval = float(1)
+
+    def update(self: MeteorSpawner, delta: float):
+        self.spawn_timer += delta
+
+        if self.spawn_timer >= self.spawn_interval:
+            self.spawn_meteors(5)  # Spawn 5 meteors at a time
+            self.spawn_timer = 0
+
+    def spawn_meteors(self: MeteorSpawner, amount: int):
+        for _ in range(amount):
+            Meteor(random.randint(0, 2), (random.randint(20, self.screen_width - 20), -64), self.screen_height)

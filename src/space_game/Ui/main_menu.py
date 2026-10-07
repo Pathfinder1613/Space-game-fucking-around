@@ -1,7 +1,7 @@
 import pygame
 import pygame_gui
 from os.path import join
-from space_game.main import SHIP_REPOSITORY
+from space_game.ShipRepository import SHIP_REPOSITORY
 
 
 class MainMenu:
@@ -63,28 +63,23 @@ class MainMenu:
         )
 
         self.previous_ship_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                30, 100, 70, 60
-            ),
+            relative_rect=pygame.Rect(30, 100, 70, 60),
             text="<",
             manager=self.manager,
             container=self.ship_selection_panel
         )
 
         self.next_ship_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                300, 100, 70, 60
-            ),
+            relative_rect=pygame.Rect(300, 100, 70, 60),
             text=">",
             manager=self.manager,
             container=self.ship_selection_panel
         )
-
         self.ship_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect(
                 100, 100, 200, 60
             ),
-            text="SHIP 1",
+            text=self.ships[self.selected_ship].Name,
             manager=self.manager,
             container=self.ship_selection_panel
         )
@@ -99,12 +94,24 @@ class MainMenu:
         )
 
     def handle_event(self, event):
-
         self.manager.process_events(event)
 
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
 
-            if event.ui_element == self.play_button:
+            if event.ui_element == self.previous_ship_button:
+                print("PREVIOUS BUTTON PRESSED")
+                self.selected_ship = (self.selected_ship - 1) % len(self.ships)
+                self.update_ship_label()
+
+            elif event.ui_element == self.next_ship_button:
+                print("NEXT BUTTON PRESSED")
+                self.selected_ship = (self.selected_ship + 1) % len(self.ships)
+                self.update_ship_label()
+
+            elif event.ui_element == self.select_ship_button:
+                print("Selected ship:", self.ships[self.selected_ship].Name)
+
+            elif event.ui_element == self.play_button:
                 self.state = "GAME"
 
             elif event.ui_element == self.options_button:
@@ -113,31 +120,14 @@ class MainMenu:
             elif event.ui_element == self.quit_button:
                 self.state = "QUIT"
 
-            elif event.ui_element == self.previous_ship_button:
-                self.selected_ship -= 1
-
-                if self.selected_ship < 0:
-                    self.selected_ship = 2
-
-                self.update_ship_label()
-
-            elif event.ui_element == self.next_ship_button:
-                self.selected_ship += 1
-
-                if self.selected_ship > 0:
-                    self.selected_ship = 2
-
-                self.update_ship_label()
-
-            elif event.ui_element == self.select_ship_button:
-                print("Selected ship:", self.selected_ship)
-
     def update_ship_label(self):
-        self.ship_label.set_text ( text =
-            self.ships[self.selected_ship].Name
-        )
-        
+            ship = self.ships[self.selected_ship]
 
+            print("Ship index:", self.selected_ship)
+            print("Ship name:", ship.Name)
+
+            self.ship_label.set_text(ship.Name)
+        
     def update(self, time_delta):
         self.manager.update(time_delta)
 

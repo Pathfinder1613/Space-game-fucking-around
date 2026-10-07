@@ -13,8 +13,7 @@ from space_game.Ui.main_menu import MainMenu
 from space_game.animatedExplosion import AnimatedExplosion
 from space_game.globals import ALL_SPRITES
 from space_game.sound_manager import SoundManager
-from space_game.ShipRepository import ShipRepository
-
+from space_game.ShipRepository import SHIP_REPOSITORY
 from pygame.surface import Surface
 from pygame.sprite import Group
 
@@ -26,7 +25,7 @@ SCREEN_HEIGHT = 1080
 STAR_COUNT = 128
 unused_troll_variable = "(:"
 
-SHIP_REPOSITORY = ShipRepository()
+
 
 def setup_display(width: int, height: int) -> Surface:
     pygame.display.set_caption("Space Game")
@@ -88,7 +87,6 @@ def main() -> None:
     # Initialize UI manager
     game_ui = GameUI(screen_width, screen_height)
     pause_menu = pause_meun(screen_width, screen_height)
-    main_menu = MainMenu(screen)
 
     # Clock to control the frame rate
     clock = pygame.time.Clock()
@@ -101,7 +99,6 @@ def main() -> None:
         delta = clock.tick(60) / 1000.0
 
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -135,8 +132,10 @@ def main() -> None:
         for i in range(1, 20)
     ]
     # Create the player
-    player = Player(screen_width, screen_height, SHIP_REPOSITORY.get_data("heckler"))
+    selected_ship = main_menu.ships[main_menu.selected_ship]
+    player = Player(screen_width, screen_height, selected_ship)
     ALL_SPRITES.add(player)
+
     # Create the starry background
     stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)
     # Create the meteor spawner

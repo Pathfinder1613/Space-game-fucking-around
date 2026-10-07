@@ -49,3 +49,6 @@ class ShipRepository:
 
     def get_data(self: ShipRepository, id: str) -> ShipData | None:
         return self.Ships[id]
+
+# Create the shared ship repository
+SHIP_REPOSITORY = ShipRepository()

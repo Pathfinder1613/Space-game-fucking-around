@@ -130,7 +130,7 @@ class GameUI:
         if player_max_health > 0:
             health_percentage = (player_health / player_max_health) * 100
             # Clamp percentage between 0 and 100
-            health_percentage = max(0, min(player_max_health, health_percentage))
+            health_percentage = max(0, min(100, health_percentage))
             print(
                 f"HP: {player_health}/{player_max_health} "
                 f"({health_percentage:.1f}%)"

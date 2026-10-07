@@ -189,7 +189,6 @@ def main() -> None:
             laser_sprites.update(delta)
             # Update the starry background
             stars_background.update(delta)
-
             # Meteor spawning
             meteor_spawner.update(delta)
             # Update meteor sprites

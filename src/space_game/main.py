@@ -38,10 +38,10 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
 
     # Collision detection between lasers and meteors
     for laser in laser_sprites:
-        collided_meteors = pygame.sprite.spritecollide(
+        collided_meteors: list[Meteor] = pygame.sprite.spritecollide(
             laser,
             meteor_sprites,
-            True  # Fixed the typo from "Trues" to "True"
+            False
         )
 
         if collided_meteors:
@@ -49,6 +49,7 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
                 AnimatedExplosion(explosion_frames, collided_meteors[i].rect.center, explosion_sprites)
                 sound_manager.play_explosion()
                 laser.kill()
+                collided_meteors[i].shatter()
                 score += len(collided_meteors)
 
     # Collision detection between player and meteors

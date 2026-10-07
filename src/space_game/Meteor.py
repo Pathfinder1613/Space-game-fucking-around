@@ -10,15 +10,33 @@ from pygame.sprite import Group
 
 from space_game.globals import ALL_SPRITES
 
+from enum import Enum
+
+class MeteorType(Enum):
+    SMALL  = int(0),
+    MEDIUM = int(1),
+    LARGE  = int(2),
+
 class Meteor(Sprite):
-    """Class representing a meteor in the space game."""
+    ALLOW_SHATTERING: bool = True
+    METEOR_IMAGES: list[Surface] = None
     SPRITES = Group()
 
-    def __init__(self: Meteor, image: Surface, position: Vector2, screen_height: int):
+    def __init__(self: Meteor, type: MeteorType | int, position: Vector2, screen_height: int):
         super().__init__(self.SPRITES, ALL_SPRITES)
 
+        if self.METEOR_IMAGES == None:
+            self.METEOR_IMAGES = [
+                pygame.image.load(join("assets", "images", "meteor", "small.png")).convert_alpha(),
+                pygame.image.load(join("assets", "images", "meteor", "medium.png")).convert_alpha(),
+                pygame.image.load(join("assets", "images", "meteor", "large.png")).convert_alpha(),
+            ]
+
         scale = 1 + random.uniform(-0.25, 0.25)
-        self.original_image = pygame.transform.scale_by(image, scale)
+
+        self.type = type
+
+        self.original_image = pygame.transform.scale_by(self.METEOR_IMAGES[type], scale)
         self.image = self.original_image
         self.rect = self.original_image.get_rect(center = position)
 
@@ -38,6 +56,27 @@ class Meteor(Sprite):
         # Use float-based position for smooth movement
         self.position = pygame.math.Vector2(self.rect.center)
         self.rotation = random.uniform(0, 360)
+
+    def shatter(self: Meteor):
+        self.kill()
+
+        if not self.ALLOW_SHATTERING:
+            return
+
+        pieces: int = 0
+        piece_type: int = self.type - 1
+
+        if (self.type == 0):
+            return
+        elif (self.type == 1):
+            pieces = random.randint(2, 3)
+        elif (self.type == 2):
+            pieces = random.randint(3, 4)
+
+        for i in range(pieces):
+            piece = Meteor(piece_type, self.position, self.screen_height)
+
+            piece.velocity = self.velocity.rotate(random.randint(-20, 20))
 
     def update(self: Meteor, delta: float):
         self.position += self.velocity * delta

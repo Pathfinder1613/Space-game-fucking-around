@@ -30,25 +30,58 @@ class GameUI:
 
         # Score label (can remain as text)
         self.score_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 10), (200, 30)),
-            text='Score: 0',
+            relative_rect=pygame.Rect(
+                (-100, -50),
+                (200, 40)
+            ),
+            text="0",
             manager=self.ui_manager,
-            object_id='#score_label'
+            object_id="#score_label",
+            anchors={
+                "centerx": "centerx",
+                "bottom": "bottom"
+            }
         )
-
-        # Health progress bar with label
-        self.health_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 50), (80, 25)),
-            text='Health:',
-            manager=self.ui_manager,
-            object_id='#health_label_text'
-        )
-
+        
         self.health_bar = pygame_gui.elements.UIProgressBar(
-            relative_rect=pygame.Rect((90, 50), (200, 25)),
+            relative_rect=pygame.Rect(
+                (150, -130),
+                (250, 25)  # width and height 
+            ),
             manager=self.ui_manager,
-            object_id='#health_bar'
+            object_id="#health_bar",
+            anchors={
+                "left": "left",
+                "bottom": "bottom"
+            }
         )
+
+        image = pygame.image.load(
+            join("assets", "images", "ui", "Fat.png")
+        ).convert_alpha()
+        self.image_panel = pygame_gui.elements.UIPanel(
+            relative_rect=pygame.Rect(
+                (10, -160),
+                (150, 150)
+            ),
+            manager=self.ui_manager,
+            object_id="#image_panel",
+            anchors={
+                "left": "left",
+                "bottom": "bottom"
+            }
+        )
+
+        self.image = pygame_gui.elements.UIImage(
+            relative_rect=pygame.Rect(
+                (10, 8),
+                (130, 130)
+            ),
+            image_surface=image,
+            manager=self.ui_manager,
+            container=self.image_panel
+        )
+
 
         left = 10
         right = 5
@@ -95,7 +128,6 @@ class GameUI:
 
         # Update shooting cooldown progress bar
         if player_can_shoot:
-            # Ready to shoot - show full bar
             self.cooldown_bar.set_current_progress(0)
         else:
             # Calculate remaining cooldown as percentage

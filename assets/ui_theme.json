@@ -34,29 +34,11 @@
         "border_width": 2,
         "border_colour": "#FFFFFF"
     },
-    "#cooldown_label_text": {
-        "font": {
-            "name": "oxanium",
-            "size": 20,
-            "bold": true
-        },
-        "text_colour": "#FFFFFF"
-    },
     "#cooldown_bar": {
-        "bar_height": 20,
-        "font": {
-            "name": "oxanium",
-            "size": 20,
-            "bold": true
-        },
-        "filled_bar": {
-            "colour": "#0000FF"
-        },
-        "unfilled_bar": {
-            "colour": "#404000"
-        },
-        "border_width": 2,
-        "border_colour": "#FFFFFF"
+        "colors": {
+            "filled_bar": "#000000",
+            "unfilled_bar": "#00FF00, #FF0000, 0"
+        }
     },
     "#game_over_label": {
         "font": {

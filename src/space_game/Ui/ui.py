@@ -3,6 +3,10 @@ import pygame_gui
 from os.path import join
 from pathlib import Path
 
+class ProgressBarWithNoText(pygame_gui.elements.UIProgressBar):
+    def status_text(self):
+        return ""
+
 class GameUI:
     """Manages all pygame-gui elements for the space game."""
 
@@ -46,18 +50,21 @@ class GameUI:
             object_id='#health_bar'
         )
 
-        # Shooting cooldown progress bar with label
-        self.cooldown_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 85), (80, 25)),
-            text='Cooldown:',
-            manager=self.ui_manager,
-            object_id='#cooldown_label_text'
+        left = 10
+        right = 5
+        self.cooldown_bar = ProgressBarWithNoText(
+            relative_rect = pygame.Rect(left * 2 - 128, -64, 128 - left * 2 - right * 2, 64),
+            manager       = self.ui_manager,
+            anchors       = {"bottom": "bottom", "right": "right"},
+            object_id     = '#cooldown_bar'
         )
 
-        self.cooldown_bar = pygame_gui.elements.UIProgressBar(
-            relative_rect=pygame.Rect((90, 85), (200, 25)),
-            manager=self.ui_manager,
-            object_id='#cooldown_bar'
+        weapon_display_image = pygame.image.load(join("assets", "ui", "WeaponIcon_PulseLaser.png")).convert_alpha()
+        self.weapon_display = pygame_gui.elements.UIImage(
+            relative_rect = pygame.Rect(-128, -64, 128, 64),
+            image_surface = weapon_display_image,
+            anchors       = {"bottom": "bottom", "right": "right"},
+            scale_func    = pygame.transform.scale
         )
 
     def update(self, dt, score, player_health, player_max_health,
@@ -89,7 +96,7 @@ class GameUI:
         # Update shooting cooldown progress bar
         if player_can_shoot:
             # Ready to shoot - show full bar
-            self.cooldown_bar.set_current_progress(100)
+            self.cooldown_bar.set_current_progress(0)
         else:
             # Calculate remaining cooldown as percentage
             current_time = pygame.time.get_ticks()

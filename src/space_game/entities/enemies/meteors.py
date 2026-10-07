@@ -44,14 +44,8 @@ class Meteor(Sprite):
         self.speed = 200  # Base speed
         self.screen_height = screen_height
 
-        # Set random angle for movement (45-135 degrees to move downward)
-        angle_deg = random.uniform(45, 135)
-        angle_rad = math.radians(angle_deg)
         # Calculate velocity components
-        self.velocity = pygame.math.Vector2(
-            math.cos(angle_rad) * self.speed,
-            math.sin(angle_rad) * self.speed
-        )
+        self.velocity = Vector2(0, 1).rotate(random.randint(-45, 45)) * self.speed
         # Use float-based position for smooth movement
         self.position = pygame.math.Vector2(self.rect.center)
         self.rotation = random.uniform(0, 360)
@@ -59,7 +53,7 @@ class Meteor(Sprite):
     def shatter(self: Meteor):
         self.kill()
 
-        if not self.ALLOW_SHATTERING:
+        if Meteor.ALLOW_SHATTERING == False:
             return
 
         # Don't shatter if already the smallest type
@@ -71,15 +65,14 @@ class Meteor(Sprite):
 
         # Determine number of pieces based on meteor size
         pieces: int = 0
-        if self.type == MeteorType.MEDIUM.value:
+        if self.type == 1:
             pieces = random.randint(2, 3)
-        elif self.type == MeteorType.LARGE.value:
+        elif self.type == 2:
             pieces = random.randint(3, 4)
 
         for _ in range(pieces):
+            print("Spawned Meteor Fracture")
             piece = Meteor(piece_type, self.position, self.screen_height)
-
-            # Give each piece a slight variation in velocity
             piece.velocity = self.velocity.rotate(random.randint(-20, 20))
 
     def update(self: Meteor, delta: float):

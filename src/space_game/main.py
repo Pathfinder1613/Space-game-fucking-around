@@ -190,7 +190,6 @@ def main() -> None:
             # Update the starry background
             stars_background.update(delta)
 
-            test_emitter.update(delta)
             # Meteor spawning
             meteor_spawner.update(delta)
             # Update meteor sprites
@@ -204,7 +203,6 @@ def main() -> None:
         screen.fill((0, 0, 0))  # Fill the screen with black
         # Draw the starry background
         stars_background.draw(screen)
-        test_emitter.draw(screen)
 
         # Draw all sprites (includes player, lasers, and meteors)
         ALL_SPRITES.draw(screen)

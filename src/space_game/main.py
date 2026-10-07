@@ -108,6 +108,8 @@ def main() -> None:
     # Initialize sound manager
     sound_manager = SoundManager()
     sound_manager.play_background_music()  # Start background music
+    # Initialize pause menu
+    pause_menu = pause_meun(screen_width, screen_height)
 
     # Variable to see the score
     score = 0
@@ -196,6 +198,8 @@ def main() -> None:
                         # Draw the game over screen
                         game_over_screen.ui_manager.draw_ui(screen)
                         pygame.display.flip()
+
+
 
     # Quit pygame
     pygame.quit()

@@ -145,7 +145,6 @@ def main() -> None:
     sound_manager = SoundManager()
     sound_manager.play_background_music()  # Start background music
     # Initialize pause menu
-    pause_menu = PauseMenu(screen_width, screen_height)
 
     # Variable to see the score
     score = 0

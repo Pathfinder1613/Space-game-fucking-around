@@ -1,5 +1,6 @@
 import pygame
 import sys
+import pygame_gui
 from os.path import join
 from space_game.player import Player
 from space_game.stars import StarBackground
@@ -162,7 +163,21 @@ def main() -> None:
                 if event.key == pygame.K_p:
                     paused = not paused
 
+            # Process events for UI elements
             game_ui.process_event(event)
+            if paused:
+                pause_menu.ui_manager.process_events(event)
+
+                # Handle pause menu button clicks
+                if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                    if event.ui_element == pause_menu.restart_button:
+                        # Restart the game - reset to main menu state
+                        paused = False
+                        main_menu.state = GameState.MAIN_MENU
+                        # Reset game state here if needed
+                    elif event.ui_element == pause_menu.quit_button:
+                        # Quit the game
+                        running = False
 
         # Calculate delta time
         delta = clock.tick(60) / 1000  # Amount of seconds between each loop

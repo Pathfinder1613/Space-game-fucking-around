@@ -13,7 +13,7 @@ class ShipData:
 
     def _set_defaults(self: ShipData):
         self.Name = str("Unnamed Ship")
-        self.Visual: Surface = Surface((64, 64)).convert_alpha()
+        self.Visual: Surface = Surface((64, 64))  # Default size, will be replaced in _load_all
 
         self.Health   = int(100)
         self.Speed    = int(300)
@@ -24,17 +24,25 @@ class ShipData:
 
 class ShipRepository:
     def __init__(self: ShipRepository):
-        self.Ships: dict[str, ShipData] = {}
-        self._load_all()
+        self._Ships: dict[str, ShipData] = {}
+        self._loaded = False
+
+    @property
+    def Ships(self: ShipRepository) -> dict[str, ShipData]:
+        if not self._loaded:
+            self._load_all()
+        return self._Ships
 
     def _load_all(self: ShipRepository):
+        if self._loaded:
+            return
         ship_path = Path("assets", "ships")
 
         data_folders = [f.name for f in ship_path.iterdir() if f.is_dir()]
 
         for ship_id in data_folders:
             ship_data = ShipData()
-            ship_data.Visual = pygame.image.load(Path(ship_path, ship_id, "visual.png"))
+            ship_data.Visual = pygame.image.load(Path(ship_path, ship_id, "visual.png")).convert_alpha()
 
             with open(Path(ship_path, ship_id, "data.json"), "r", encoding = "utf-8") as file:
                 data = json.load(file)
@@ -45,10 +53,8 @@ class ShipRepository:
                 ship_data.Speed    = int(data["Attributes"]["Speed"])
                 ship_data.FireRate = float(data["Attributes"]["FireRate"])
 
-            self.Ships[ship_id] = ship_data
+            self._Ships[ship_id] = ship_data
+        self._loaded = True
 
     def get_data(self: ShipRepository, id: str) -> ShipData | None:
-        return self.Ships[id]
-
-# Create the shared ship repository
-SHIP_REPOSITORY = ShipRepository()
+        return self.Ships.get(id)

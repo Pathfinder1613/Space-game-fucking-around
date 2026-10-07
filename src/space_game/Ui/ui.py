@@ -1,6 +1,7 @@
 import pygame
 import pygame_gui
 from os.path import join
+from pathlib import Path
 
 class GameUI:
     """Manages all pygame-gui elements for the space game."""
@@ -8,6 +9,13 @@ class GameUI:
     def __init__(self, screen_width, screen_height):
         """Initialize the UI manager and create UI elements."""
         self.ui_manager = pygame_gui.UIManager((screen_width, screen_height))
+
+        self.ui_manager.add_font_paths(
+            font_name = "oxanium",
+            regular_path = "assets/fonts/Oxanium-Bold.ttf",
+            bold_path = "assets/fonts/Oxanium-Bold.tff"
+        )
+
         # Load UI theme for better visuals
         try:
             self.ui_manager.get_theme().load_theme(join("assets", "ui_theme.json"))
@@ -15,9 +23,6 @@ class GameUI:
             print("Warning: ui_theme.json not found, using default theme")
         except Exception as e:
             print(f"Error loading ui_theme.json: {e}")
-
-        # Load custom font for theme (verification)
-        self._load_custom_font_for_theme()
 
         # Score label (can remain as text)
         self.score_label = pygame_gui.elements.UILabel(
@@ -54,26 +59,6 @@ class GameUI:
             manager=self.ui_manager,
             object_id='#cooldown_bar'
         )
-
-        
-
-
-    def _load_custom_font_for_theme(self):
-        """Load the custom Oxanium-Bold font and make it available for the theme."""
-        font_path = join("assets", "images", "Oxanium-Bold.ttf")
-        try:
-            # Verify the font can be loaded
-            test_font = pygame.font.Font(font_path, 24)
-            print(f"Successfully loaded custom font from {font_path}")
-            # Store the path for verification
-            self.custom_font_path = font_path
-        except FileNotFoundError:
-            print(f"Error: Custom font not found at {font_path}")
-            print("Fall back to default system font")
-            self.custom_font_path = None
-        except Exception as e:
-            print(f"Error loading custom font: {e}")
-            self.custom_font_path = None
 
     def update(self, dt, score, player_health, player_max_health,
                player_can_shoot, player_laser_shoot_time, player_cooldown_duration):

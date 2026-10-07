@@ -1,7 +1,7 @@
 {
     "#score_label": {
         "font": {
-            "name": "assets/images/Oxanium-Bold.ttf",
+            "name": "oxanium",
             "size": 24,
             "bold": true
         },
@@ -12,7 +12,7 @@
     },
     "#health_label_text": {
         "font": {
-            "name": "assets/images/Oxanium-Bold.ttf",
+            "name": "oxanium",
             "size": 20,
             "bold": true
         },
@@ -20,6 +20,11 @@
     },
     "#health_bar": {
         "bar_height": 20,
+        "font": {
+            "name": "oxanium",
+            "size": 20,
+            "bold": true
+        },
         "filled_bar": {
             "colour": "#FF0000"
         },
@@ -31,7 +36,7 @@
     },
     "#cooldown_label_text": {
         "font": {
-            "name": "assets/images/Oxanium-Bold.ttf",
+            "name": "oxanium",
             "size": 20,
             "bold": true
         },
@@ -39,6 +44,11 @@
     },
     "#cooldown_bar": {
         "bar_height": 20,
+        "font": {
+            "name": "oxanium",
+            "size": 20,
+            "bold": true
+        },
         "filled_bar": {
             "colour": "#0000FF"
         },
@@ -50,7 +60,7 @@
     },
     "#game_over_label": {
         "font": {
-            "name": "assets/images/Oxanium-Bold.ttf",
+            "name": "oxanium",
             "size": 36,
             "bold": true
         },
@@ -61,7 +71,7 @@
     },
     "#final_score_label": {
         "font": {
-            "name": "assets/images/Oxanium-Bold.ttf",
+            "name": "oxanium",
             "size": 24,
             "bold": true
         },
@@ -72,7 +82,7 @@
     },
     "#restart_button": {
         "font": {
-            "name": "assets/images/Oxanium-Bold.ttf",
+            "name": "oxanium",
             "size": 24,
             "bold": true
         },
@@ -83,7 +93,7 @@
     },
     "#quit_button": {
         "font": {
-            "name": "assets/images/Oxanium-Bold.ttf",
+            "name": "oxanium",
             "size": 24,
             "bold": true
         },

@@ -37,6 +37,10 @@ class MeteorSpawner:
 
     def spawn_meteors(self: MeteorSpawner, amount: int):
         for _ in range(amount):
-            images = [self.small_meteor_image, self.medium_meteor_image, self.large_meteor_image]
+            images = [
+                self.small_meteor_image, 
+                self.medium_meteor_image, 
+                self.large_meteor_image,
+            ]
 
             Meteor(images[random.randint(0, len(images) - 1)], (random.randint(20, self.screen_width - 20), -64), self.screen_height)

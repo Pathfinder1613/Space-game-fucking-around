@@ -6,6 +6,13 @@ class gameoverScreen:
     def __init__(self, screen_width, screen_height):
         """Initialize the game over screen UI elements."""
         self.ui_manager = pygame_gui.UIManager((screen_width, screen_height))
+
+        self.ui_manager.add_font_paths(
+            font_name = "oxanium",
+            regular_path = "assets/fonts/Oxanium-Bold.ttf",
+            bold_path = "assets/fonts/Oxanium-Bold.tff"
+        )
+
         # Load UI theme for better visuals
         try:
             self.ui_manager.get_theme().load_theme(join("assets", "ui_theme.json"))

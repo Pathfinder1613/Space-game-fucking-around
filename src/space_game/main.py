@@ -135,7 +135,7 @@ def main() -> None:
         for i in range(1, 20)
     ]
     # Create the player
-    player = Player(screen_width, screen_height, SHIP_REPOSITORY.get_data("scuttlebug"))
+    player = Player(screen_width, screen_height, SHIP_REPOSITORY.get_data("heckler"))
     ALL_SPRITES.add(player)
     # Create the starry background
     stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)

@@ -101,6 +101,9 @@ class GameUI:
             scale_func    = pygame.transform.scale
         )
 
+    def get_selected_ship(self):
+            return self.ships[self.selected_ship]
+
     def update(self, dt, score, player_health, player_max_health,
                player_can_shoot, player_laser_shoot_time, player_cooldown_duration):
         """Update all UI elements with current game state."""

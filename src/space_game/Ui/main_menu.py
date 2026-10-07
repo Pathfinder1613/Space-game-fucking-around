@@ -1,6 +1,7 @@
 import pygame
 import pygame_gui
 from os.path import join
+from space_game.main import SHIP_REPOSITORY
 
 
 class MainMenu:
@@ -9,6 +10,8 @@ class MainMenu:
 
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
+
+        self.ships = list(SHIP_REPOSITORY.Ships.values())
 
         self.manager = pygame_gui.UIManager(
             (self.screen_width, self.screen_height)
@@ -121,8 +124,8 @@ class MainMenu:
             elif event.ui_element == self.next_ship_button:
                 self.selected_ship += 1
 
-                if self.selected_ship > 2:
-                    self.selected_ship = 0
+                if self.selected_ship > 0:
+                    self.selected_ship = 2
 
                 self.update_ship_label()
 
@@ -130,9 +133,10 @@ class MainMenu:
                 print("Selected ship:", self.selected_ship)
 
     def update_ship_label(self):
-        self.ship_label.set_text(
-            f"SHIP {self.selected_ship + 1}"
+        self.ship_label.set_text ( text =
+            self.ships[self.selected_ship].Name
         )
+        
 
     def update(self, time_delta):
         self.manager.update(time_delta)

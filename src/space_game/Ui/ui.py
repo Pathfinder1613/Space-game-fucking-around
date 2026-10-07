@@ -1,7 +1,7 @@
 import pygame
 import pygame_gui
 from os.path import join
-from pathlib import Path
+
 
 class ProgressBarWithNoText(pygame_gui.elements.UIProgressBar):
     def status_text(self):
@@ -45,8 +45,8 @@ class GameUI:
 
         self.health_bar = pygame_gui.elements.UIProgressBar(
             relative_rect=pygame.Rect(
-                (150, -130),
-                (250, 25)  # width and height 
+                (170, -130),
+                (200, 25)  # width and height
             ),
             manager=self.ui_manager,
             object_id="#health_bar",
@@ -123,20 +123,36 @@ class GameUI:
         self.score_label.set_text(f'{score}')
 
         # Update health progress bar (value as percentage)
-        health_percentage = (player_health / player_max_health) * 100
-        self.health_bar.set_current_progress(health_percentage)
+        if player_max_health > 0:
+            health_percentage = (player_health / player_max_health) * 100
+            # Clamp percentage between 0 and 100
+            health_percentage = max(0, min(player_max_health, health_percentage))
+            print(
+                f"HP: {player_health}/{player_max_health} "
+                f"({health_percentage:.1f}%)"
+            )
+            self.health_bar.set_current_progress(health_percentage)
+        else:
+            # Fallback if max health is invalid
+            self.health_bar.set_current_progress(0)
 
         # Update shooting cooldown progress bar
         if player_can_shoot:
             self.cooldown_bar.set_current_progress(0)
         else:
             # Calculate remaining cooldown as percentage
-            current_time = pygame.time.get_ticks()
-            elapsed = (current_time - player_laser_shoot_time) / 1000
-            remaining = max(0, player_cooldown_duration - elapsed)
-            cooldown_percentage = (remaining / player_cooldown_duration) * 100
-            # Show remaining cooldown directly (0% when ready, 100% when on cooldown)
-            self.cooldown_bar.set_current_progress(cooldown_percentage)
+            if player_cooldown_duration > 0:
+                current_time = pygame.time.get_ticks()
+                elapsed = (current_time - player_laser_shoot_time) / 1000
+                remaining = max(0, player_cooldown_duration - elapsed)
+                cooldown_percentage = (remaining / player_cooldown_duration) * 100
+                # Clamp percentage between 0 and 100
+                cooldown_percentage = max(0, min(100, cooldown_percentage))
+                # Show remaining cooldown directly (0% when ready, 100% when on cooldown)
+                self.cooldown_bar.set_current_progress(cooldown_percentage)
+            else:
+                # Fallback if cooldown duration is invalid
+                self.cooldown_bar.set_current_progress(0)
 
     def draw(self, screen):
         """Draw all UI elements to the screen."""

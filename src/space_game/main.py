@@ -134,7 +134,7 @@ def main() -> None:
         for i in range(1, 20)
     ]
     # Create the player
-    player = Player(screen_width, screen_height, SHIP_REPOSITORY.get_data("heckler"))
+    player = Player(screen_width, screen_height, SHIP_REPOSITORY.get_data("scuttlebug"))
     ALL_SPRITES.add(player)
     # Create the starry background
     stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)
@@ -153,7 +153,6 @@ def main() -> None:
     # Main game loop
     running = True
     paused = False
-    was_paused = False  # Track previous pause state for sound effects
     while running:
         # Event handling
         for event in pygame.event.get():
@@ -213,27 +212,27 @@ def main() -> None:
         if keys[pygame.K_ESCAPE]:
             running = False
 
+        # Check if player is dead and show game over screen
         if player.current_health <= 0:
-                    # Show game over screen using pygame_gui
-                    update_ui(game_ui, delta, score, player)
+            # Show game over screen using pygame_gui
+            update_ui(game_ui, delta, score, player)
+            game_ui.draw(screen)
+            pygame.display.flip()
 
-                    game_ui.draw(screen)
-                    pygame.display.flip()
-
-                    game_over_screen = gameoverScreen(screen_width, screen_height)
-                    game_over_screen.score_label.set_text(f'Final Score: {score}')
-                    while True:
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                pygame.quit()
-                                sys.exit()
-                        # Update the game over screen UI
-                        game_over_screen.ui_manager.update(delta)
-                        # turn off the background music
-                        sound_manager.stop_background_music()
-                        # Draw the game over screen
-                        game_over_screen.ui_manager.draw_ui(screen)
-                        pygame.display.flip()
+            game_over_screen = gameoverScreen(screen_width, screen_height)
+            game_over_screen.score_label.set_text(f'Final Score: {score}')
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                # Update the game over screen UI
+                game_over_screen.ui_manager.update(delta)
+                # turn off the background music
+                sound_manager.stop_background_music()
+                # Draw the game over screen
+                game_over_screen.ui_manager.draw_ui(screen)
+                pygame.display.flip()
 
     # Quit pygame
     pygame.quit()

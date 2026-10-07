@@ -1,8 +1,8 @@
 {
     "Name": "Scuttlebug",
     "Attributes": {
-        "Health": 100,
-        "Speed": 300,
+        "Health": 200,
+        "Speed": 200,
         "FireRate": 0.5
     },
     "Weapons": {

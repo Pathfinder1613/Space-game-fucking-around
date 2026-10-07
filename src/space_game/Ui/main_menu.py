@@ -3,8 +3,8 @@ import pygame_gui
 from os.path import join
 
 from pygame.surface import Surface 
-from space_game.ship_repository import ShipRepository
-from space_game.state import GameState
+from space_game.core.ship_repository import ShipRepository
+from space_game.core.state import GameState
 
 class MainMenu:
     def __init__(self: MainMenu, screen: Surface, ship_repository: ShipRepository):

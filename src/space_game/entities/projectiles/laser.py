@@ -6,7 +6,7 @@ from pygame.sprite import Group
 from pygame.surface import Surface
 from pygame.math import Vector2
 
-from space_game.globals import ALL_SPRITES
+from space_game.core.globals import ALL_SPRITES
 
 class Laser(Sprite):
     """Class representing a laser beam fired by the player."""

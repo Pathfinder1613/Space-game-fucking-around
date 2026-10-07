@@ -4,7 +4,7 @@ import random
 import pygame
 from os.path import join
 
-from space_game.globals import ALL_SPRITES
+from space_game.core.globals import ALL_SPRITES
 
 from pygame import Surface
 from pygame.math import Vector2

@@ -63,6 +63,8 @@
              "dark_bg":"#21282D",
              "normal_border": "#999999"
          },
+         "images":
+         {
          "misc":
          {
              "shape": "rounded_rectangle",

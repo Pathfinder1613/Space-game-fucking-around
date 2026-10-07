@@ -31,18 +31,18 @@ class GameUI:
         # Score label (can remain as text)
         self.score_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect(
-                (-100, -50),
-                (200, 40)
+                (0, 10),
+                (70, 70)
             ),
             text="0",
             manager=self.ui_manager,
             object_id="#score_label",
             anchors={
                 "centerx": "centerx",
-                "bottom": "bottom"
+                "top": "top"
             }
         )
-        
+
         self.health_bar = pygame_gui.elements.UIProgressBar(
             relative_rect=pygame.Rect(
                 (150, -130),
@@ -120,7 +120,7 @@ class GameUI:
         self.ui_manager.update(dt)
 
         # Update score display
-        self.score_label.set_text(f'Score: {score}')
+        self.score_label.set_text(f'{score}')
 
         # Update health progress bar (value as percentage)
         health_percentage = (player_health / player_max_health) * 100

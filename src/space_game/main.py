@@ -14,6 +14,7 @@ from space_game.animatedExplosion import AnimatedExplosion
 from space_game.globals import ALL_SPRITES
 from space_game.sound_manager import SoundManager
 from space_game.ShipRepository import ShipRepository
+from space_game.state import GameState
 
 from pygame.surface import Surface
 from pygame.sprite import Group
@@ -79,25 +80,22 @@ def main() -> None:
     # Initialize pygame
     pygame.init()
 
-    ship_repository = ShipRepository()
-
     # Set up the display
     screen_width = SCREEN_WIDTH
     screen_height = SCREEN_HEIGHT
     screen = setup_display(screen_width, screen_height)
 
+    ship_repository = ShipRepository()
+
     # Initialize UI manager
     game_ui = GameUI(screen_width, screen_height)
     pause_menu = pause_meun(screen_width, screen_height)
-    main_menu = MainMenu(screen)
+    main_menu = MainMenu(screen, ship_repository)
 
     # Clock to control the frame rate
     clock = pygame.time.Clock()
 
-    # MAIN MENU
-    main_menu = MainMenu(screen)
     menu_running = True
-
     while menu_running:
         delta = clock.tick(60) / 1000.0
 
@@ -118,10 +116,10 @@ def main() -> None:
         pygame.display.flip()
 
         # Check what the menu wants to do
-        if main_menu.state == "GAME":
+        if main_menu.state == GameState.GAMEPLAY:
             menu_running = False
 
-        elif main_menu.state == "QUIT":
+        elif main_menu.state == GameState.EXITING:
             pygame.quit()
             sys.exit()
 

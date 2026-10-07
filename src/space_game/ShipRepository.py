@@ -13,7 +13,7 @@ class ShipData:
 
     def _set_defaults(self: ShipData):
         self.Name = str("Unnamed Ship")
-        self.Visual: Surface = None
+        self.Visual: Surface = Surface((64, 64)).convert_alpha()
 
         self.Health   = int(100)
         self.Speed    = int(300)
@@ -23,12 +23,9 @@ class ShipData:
         self.ThrustPoints: dict[str, Vector2] = {}
 
 class ShipRepository:
-    INSTANCE: ShipRepository = None
-
     def __init__(self: ShipRepository):
         self.Ships: dict[str, ShipData] = {}
         self._load_all()
-        ShipRepository.INSTANCE = self
 
     def _load_all(self: ShipRepository):
         ship_path = Path("assets", "ships")

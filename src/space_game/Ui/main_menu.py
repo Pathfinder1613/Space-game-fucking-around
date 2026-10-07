@@ -2,21 +2,20 @@ import pygame
 import pygame_gui
 from os.path import join
 
+from pygame.surface import Surface 
 from space_game.ShipRepository import ShipRepository
-
+from space_game.state import GameState
 
 class MainMenu:
-    def __init__(self, screen):
+    def __init__(self: MainMenu, screen: Surface, ship_repository: ShipRepository):
         self.screen = screen
 
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
 
-        self.ships = list(ShipRepository.INSTANCE.Ships.values())
+        self.ships = list(ship_repository.Ships.values())
 
-        self.manager = pygame_gui.UIManager(
-            (self.screen_width, self.screen_height)
-        )
+        self.manager = pygame_gui.UIManager((self.screen_width, self.screen_height))
 
         self.manager.add_font_paths(
             font_name = "oxanium",
@@ -24,7 +23,7 @@ class MainMenu:
             bold_path = "assets/fonts/Oxanium-Bold.tff"
         )
 
-        self.state = "MAIN_MENU"
+        self.state = GameState.MAIN_MENU
         self.selected_ship = 0
 
         # MAIN MENU - LEFT SIDE
@@ -96,6 +95,15 @@ class MainMenu:
             container=self.ship_selection_panel
         )
 
+        self.ship_visual = pygame_gui.elements.UIImage(
+            relative_rect = pygame.Rect(0, 80, 256, 256),
+            manager = self.manager,
+            parent_element = self.ship_selection_panel,
+            container = self.ship_selection_panel,
+            anchors = {"center": "center"},
+            image_surface = pygame.surface.Surface((256, 256)).convert_alpha()
+        )
+
         # self.select_ship_button = pygame_gui.elements.UIButton(
         #     relative_rect=pygame.Rect(
         #         75, 350, 250, 60
@@ -107,20 +115,18 @@ class MainMenu:
 
         self.update_ship_label()
 
-    def handle_event(self, event):
+    def handle_event(self: MainMenu, event):
 
         self.manager.process_events(event)
 
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
-
             if event.ui_element == self.play_button:
-                self.state = "GAME"
+                self.state = GameState.GAMEPLAY
             elif event.ui_element == self.options_button:
-                self.state = "OPTIONS"
-
+                self.state = GameState.SETTINGS
             elif event.ui_element == self.quit_button:
-                self.state = "QUIT"
-
+                self.state = GameState.EXITING
+                pass
             elif event.ui_element == self.previous_ship_button:
                 self.selected_ship -= 1
 
@@ -139,7 +145,9 @@ class MainMenu:
 
 
     def update_ship_label(self):
-        self.ship_label.set_text(self.ships[self.selected_ship].Name)
+        ship_data = self.ships[self.selected_ship]
+        self.ship_label.set_text(ship_data.Name)
+        self.ship_visual.set_image(ship_data.Visual, scale_func = pygame.transform.scale)
 
     def update(self, time_delta):
         self.manager.update(time_delta)

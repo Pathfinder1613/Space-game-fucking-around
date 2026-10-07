@@ -1,14 +1,18 @@
 import pygame
 from os.path import join
 from space_game.laser import Laser
+from space_game.ShipRepository import ShipData
 
 
 class Player(pygame.sprite.Sprite):
     """Player spaceship controlled by a/d/w/s or arrow keys."""
 
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width, screen_height, data: ShipData):
         super().__init__()
-        self.player_surf = pygame.image.load(join("assets", "images", "ships", "kool.png")).convert_alpha()  # Load your spaceship image here
+
+
+
+        self.player_surf = data.Visual.copy()  # Load your spaceship image here
         self.laser_surf = pygame.image.load(join("assets", "images", "laser.png")).convert_alpha()  # Load laser image
         self.image = pygame.transform.scale(self.player_surf, (64, 64))
         self.rect = self.image.get_rect( center=(screen_width // 2, screen_height - 45))
@@ -18,21 +22,21 @@ class Player(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2((screen_width - self.width) // 2, screen_height - self.height - 45)
         self.rect.center = self.pos
         self.direction = pygame.math.Vector2(0, 0)
-        self.speed = 300.0
+        self.speed = data.Speed
         self.screen_width = screen_width
         self.screen_height = screen_height
 
         # cooldown timer for shooting
         self.can_shoot = True
         self.laser_shoot_time = 0
-        self.cooldown_duration = 0.4
+        self.cooldown_duration = data.FireRate
 
         # mask for collision detection
         self.mask = pygame.mask.from_surface(self.image)
 
 
         # health tracking
-        self.max_health = 100
+        self.max_health = data.Health
         self.current_health = self.max_health
         self.invulnerable_timer = 0  # For invulnerability after taking damage
 

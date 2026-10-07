@@ -12,6 +12,7 @@ from space_game.Ui.pause_meun import pause_meun
 from space_game.animatedExplosion import AnimatedExplosion
 from space_game.globals import ALL_SPRITES
 from space_game.sound_manager import SoundManager
+from space_game.ShipRepository import ShipRepository
 
 from pygame.surface import Surface
 from pygame.sprite import Group
@@ -23,6 +24,8 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 STAR_COUNT = 128
 unused_troll_variable = "(:"
+
+SHIP_REPOSITORY = ShipRepository()
 
 def setup_display(width: int, height: int) -> Surface:
     pygame.display.set_caption("Space Game")
@@ -98,7 +101,7 @@ def main() -> None:
         for i in range(1, 20)
     ]
     # Create the player
-    player = Player(screen_width, screen_height)
+    player = Player(screen_width, screen_height, SHIP_REPOSITORY.get_data("heckler"))
     ALL_SPRITES.add(player)
     # Create the starry background
     stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)

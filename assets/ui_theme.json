@@ -10,18 +10,10 @@
         "border_width": 2,
         "border_colour": "#00FF00"
     },
-    "#health_label_text": {
-        "font": {
-            "name": "oxanium",
-            "size": 20,
-            "bold": true
-        },
-        "text_colour": "#FFFFFF"
-    },
     "#health_bar": {
         "colors": {
             "filled_bar": "#00ff00",
-            "unfilled_bar": "#FF0000" 
+            "unfilled_bar": "#000000" 
         }
     },
     "#cooldown_bar": {
@@ -44,14 +36,39 @@
     "#final_score_label": {
         "font": {
             "name": "oxanium",
-            "size": 24,
+            "size": 50,
             "bold": true
         },
-        "text_colour": "#FFFFFF",
-        "bg_colour": "#000000",
-        "border_width": 2,
-        "border_colour": "#FFFFFF"
+        "colors": {
+
+        }
     },
+
+    "#image_panel":
+     {
+         "colours":
+         {
+             "dark_bg":"#21282D",
+             "normal_border": "#999999"
+         },
+         "images":
+         {
+             "background_image":
+             {
+                 "package": "data.images",
+                 "resource": "assets/images/ui/Fat.png",
+                 "sub_surface_rect": "0,0,32,32"
+             }
+         },
+         "misc":
+         {
+             "shape": "rounded_rectangle",
+             "shape_corner_radius": "10",
+             "border_width": "1",
+             "shadow_width": "15"
+         }
+     },
+
     "#restart_button": {
         "font": {
             "name": "oxanium",

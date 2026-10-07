@@ -1,7 +1,8 @@
 import pygame
 import pygame_gui
 from os.path import join
-from space_game.main import SHIP_REPOSITORY
+
+from space_game.ShipRepository import ShipRepository
 
 
 class MainMenu:
@@ -11,10 +12,16 @@ class MainMenu:
         self.screen_width = screen.get_width()
         self.screen_height = screen.get_height()
 
-        self.ships = list(SHIP_REPOSITORY.Ships.values())
+        self.ships = list(ShipRepository.INSTANCE.Ships.values())
 
         self.manager = pygame_gui.UIManager(
             (self.screen_width, self.screen_height)
+        )
+
+        self.manager.add_font_paths(
+            font_name = "oxanium",
+            regular_path = "assets/fonts/Oxanium-Bold.ttf",
+            bold_path = "assets/fonts/Oxanium-Bold.tff"
         )
 
         self.state = "MAIN_MENU"
@@ -89,14 +96,16 @@ class MainMenu:
             container=self.ship_selection_panel
         )
 
-        self.select_ship_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(
-                75, 350, 250, 60
-            ),
-            text="SELECT SHIP",
-            manager=self.manager,
-            container=self.ship_selection_panel
-        )
+        # self.select_ship_button = pygame_gui.elements.UIButton(
+        #     relative_rect=pygame.Rect(
+        #         75, 350, 250, 60
+        #     ),
+        #     text="SELECT SHIP",
+        #     manager=self.manager,
+        #     container=self.ship_selection_panel
+        # )
+
+        self.update_ship_label()
 
     def handle_event(self, event):
 
@@ -106,7 +115,6 @@ class MainMenu:
 
             if event.ui_element == self.play_button:
                 self.state = "GAME"
-
             elif event.ui_element == self.options_button:
                 self.state = "OPTIONS"
 
@@ -117,26 +125,21 @@ class MainMenu:
                 self.selected_ship -= 1
 
                 if self.selected_ship < 0:
-                    self.selected_ship = 2
+                    self.selected_ship = len(self.ships) - 1
 
                 self.update_ship_label()
 
             elif event.ui_element == self.next_ship_button:
                 self.selected_ship += 1
 
-                if self.selected_ship > 0:
-                    self.selected_ship = 2
+                if self.selected_ship > len(self.ships) - 1:
+                    self.selected_ship = 0
 
                 self.update_ship_label()
 
-            elif event.ui_element == self.select_ship_button:
-                print("Selected ship:", self.selected_ship)
 
     def update_ship_label(self):
-        self.ship_label.set_text ( text =
-            self.ships[self.selected_ship].Name
-        )
-        
+        self.ship_label.set_text(self.ships[self.selected_ship].Name)
 
     def update(self, time_delta):
         self.manager.update(time_delta)

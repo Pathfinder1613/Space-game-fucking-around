@@ -23,9 +23,12 @@ class ShipData:
         self.ThrustPoints: dict[str, Vector2] = {}
 
 class ShipRepository:
+    INSTANCE: ShipRepository = None
+
     def __init__(self: ShipRepository):
         self.Ships: dict[str, ShipData] = {}
         self._load_all()
+        ShipRepository.INSTANCE = self
 
     def _load_all(self: ShipRepository):
         ship_path = Path("assets", "ships")

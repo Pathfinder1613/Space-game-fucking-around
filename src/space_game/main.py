@@ -26,8 +26,6 @@ SCREEN_HEIGHT = 1080
 STAR_COUNT = 128
 unused_troll_variable = "(:"
 
-SHIP_REPOSITORY = ShipRepository()
-
 def setup_display(width: int, height: int) -> Surface:
     pygame.display.set_caption("Space Game")
     display = pygame.display.set_mode((width, height))
@@ -45,10 +43,11 @@ def handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_fr
         )
 
         if collided_meteors:
+            sound_manager.play_explosion()
+            laser.kill()
+
             for i in range(len(collided_meteors)):
                 AnimatedExplosion(explosion_frames, collided_meteors[i].rect.center, explosion_sprites)
-                sound_manager.play_explosion()
-                laser.kill()
                 collided_meteors[i].shatter()
                 score += len(collided_meteors)
 
@@ -79,6 +78,8 @@ def main() -> None:
     """Main game loop for the space game."""
     # Initialize pygame
     pygame.init()
+
+    ship_repository = ShipRepository()
 
     # Set up the display
     screen_width = SCREEN_WIDTH
@@ -135,7 +136,7 @@ def main() -> None:
         for i in range(1, 20)
     ]
     # Create the player
-    player = Player(screen_width, screen_height, SHIP_REPOSITORY.get_data("heckler"))
+    player = Player(screen_width, screen_height, main_menu.ships[main_menu.selected_ship])
     ALL_SPRITES.add(player)
     # Create the starry background
     stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)

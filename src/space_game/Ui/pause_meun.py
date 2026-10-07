@@ -14,6 +14,12 @@ class pause_meun():
         except Exception as e:
             print(f"Error loading ui_theme.json: {e}")
 
+        self.ui_manager.add_font_paths(
+            font_name = "oxanium",
+            regular_path = "assets/fonts/Oxanium-Bold.ttf",
+            bold_path = "assets/fonts/Oxanium-Bold.tff"
+        )
+
         # Create pause label
         self.pause_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((screen_width // 2 - 100, screen_height // 2 - 50), (200, 50)),

@@ -10,8 +10,6 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, screen_width, screen_height, data: ShipData):
         super().__init__()
 
-
-
         self.player_surf = data.Visual.copy()  # Load your spaceship image here
         self.laser_surf = pygame.image.load(join("assets", "images", "laser.png")).convert_alpha()  # Load laser image
         self.image = pygame.transform.scale(self.player_surf, (64, 64))

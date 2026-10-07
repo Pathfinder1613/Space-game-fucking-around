@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, screen_width, screen_height):
         super().__init__()
-        self.player_surf = pygame.image.load(join("assets", "images", "player.png")).convert_alpha()  # Load your spaceship image here
+        self.player_surf = pygame.image.load(join("assets", "images", "ships", "kool.png")).convert_alpha()  # Load your spaceship image here
         self.laser_surf = pygame.image.load(join("assets", "images", "laser.png")).convert_alpha()  # Load laser image
         self.image = pygame.transform.scale(self.player_surf, (64, 64))
         self.rect = self.image.get_rect( center=(screen_width // 2, screen_height - 45))

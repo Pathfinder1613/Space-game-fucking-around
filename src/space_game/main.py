@@ -2,7 +2,7 @@ import pygame
 import sys
 from os.path import join
 from space_game.player import Player
-from space_game.stars import StarBackground
+from space_game.vfx.stars import StarBackground
 from space_game.laser import Laser
 from space_game.meteors import Meteor
 from space_game.meteors import MeteorSpawner
@@ -10,11 +10,12 @@ from space_game.ui.game_ui import GameUI
 from space_game.ui.game_over_screen import GameOverScreen
 from space_game.ui.pause_menu import PauseMenu
 from space_game.ui.main_menu import MainMenu
-from space_game.animated_explosion import AnimatedExplosion
-from space_game.globals import ALL_SPRITES
+from space_game.vfx.animated_explosion import AnimatedExplosion
 from space_game.sound_manager import SoundManager
 from space_game.ship_repository import ShipRepository
 from space_game.state import GameState
+from space_game.globals import ALL_SPRITES
+from space_game.vfx.thrust_particles import ParticleEmitter
 
 from pygame.surface import Surface
 from pygame.sprite import Group
@@ -139,6 +140,10 @@ def main() -> None:
     # Create the starry background
     stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)
     # Create the meteor spawner
+
+    test_emitter = ParticleEmitter()
+    test_emitter.position = player.pos
+
     meteor_spawner = MeteorSpawner(screen_width, screen_height)
 
     # Initialize sound manager
@@ -174,6 +179,8 @@ def main() -> None:
             laser_sprites.update(delta)
             # Update the starry background
             stars_background.update(delta)
+
+            test_emitter.update(delta)
             # Meteor spawning
             meteor_spawner.update(delta)
             # Update meteor sprites
@@ -187,6 +194,7 @@ def main() -> None:
         screen.fill((0, 0, 0))  # Fill the screen with black
         # Draw the starry background
         stars_background.draw(screen)
+        test_emitter.draw(screen)
 
         # Draw all sprites (includes player, lasers, and meteors)
         ALL_SPRITES.draw(screen)

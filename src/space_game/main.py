@@ -141,9 +141,6 @@ def main() -> None:
     stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)
     # Create the meteor spawner
 
-    test_emitter = ParticleEmitter()
-    test_emitter.position = player.pos
-
     meteor_spawner = MeteorSpawner(screen_width, screen_height)
 
     # Initialize sound manager

@@ -164,27 +164,10 @@ def main() -> None:
                         screen_height
                     )
 
-<<<<<<< HEAD
                     sound_manager = SoundManager()
                     sound_manager.play_background_music()
 
                     score = 0
-=======
-        # Game logic updates
-        if not paused:
-            player.update(delta, laser_sprites, sound_manager)  # Pass sound manager to player
-            laser_sprites.update(delta)
-            # Update the starry background
-            stars_background.update(delta)
-            # Meteor spawning
-            meteor_spawner.update(delta)
-            # Update meteor sprites
-            meteor_sprites.update(delta)
-            # Update explosion sprites
-            explosion_sprites.update(delta * 8)
-            # Handle collisions and update score
-            score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, sound_manager)
->>>>>>> 1bcd1f2b83196b97e420c15bc2eb5654b868e27d
 
                     game_state = GameState.GAMEPLAY
 

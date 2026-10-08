@@ -2,6 +2,8 @@ import pygame
 import pygame_gui
 from os.path import join
 
+from space_game.core.state import GameState
+
 class GameOverScreen:
     def __init__(self, screen_width, screen_height):
         """Initialize the game over screen UI elements."""
@@ -52,6 +54,25 @@ class GameOverScreen:
     def update(self, dt):
             """Update the UI elements."""
             self.ui_manager.update(dt)
+
+    def handle_event(self, event):
+        """Handle game over screen events."""
+
+        self.ui_manager.process_events(event)
+
+        if event.type == pygame_gui.UI_BUTTON_PRESSED:
+
+            if event.ui_element == self.restart_button:
+                return GameState.MAIN_MENU
+
+            elif event.ui_element == self.quit_button:
+                return GameState.EXITING
+
+        return None
+
+    def update(self, dt):
+        """Update the UI elements."""
+        self.ui_manager.update(dt)
     
     def draw(self, screen):
         """Draw the UI elements to the screen."""

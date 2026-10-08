@@ -5,4 +5,5 @@ class GameState(Enum):
     SETTINGS  = int(1),
     GAMEPLAY  = int(2),
     PAUSED    = int(3),
-    EXITING   = int(4),
+    GAME_OVER = int(4),
+    EXITING   = int(5),

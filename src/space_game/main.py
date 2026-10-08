@@ -20,13 +20,10 @@ from space_game.core.state import GameState
 from pygame.surface import Surface
 from pygame.sprite import Group
 
-# Game constants
-# SCREEN_WIDTH = 1280
-# SCREEN_HEIGHT = 720
+
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 STAR_COUNT = 128
-unused_troll_variable = "(:"
 
 def setup_display(width: int, height: int) -> Surface:
     pygame.display.set_caption("Space Game")
@@ -76,180 +73,250 @@ def update_ui(game_ui, dt, score, player):
         player_cooldown_duration=player.cooldown_duration
     )
 
+
 def main() -> None:
-    """Main game loop for the space game."""
-    # Initialize pygame
     pygame.init()
 
-    # Set up the display
     screen_width = SCREEN_WIDTH
     screen_height = SCREEN_HEIGHT
+
     screen = setup_display(screen_width, screen_height)
 
-    ship_repository = ShipRepository()
-
-    # Initialize UI manager
-    game_ui = GameUI(screen_width, screen_height)
-    pause_menu = PauseMenu(screen_width, screen_height)
-    main_menu = MainMenu(screen, ship_repository)
-
-    # Clock to control the frame rate
     clock = pygame.time.Clock()
 
-    menu_running = True
-    while menu_running:
-        delta = clock.tick(60) / 1000.0
+    # Game state
+    game_state = GameState.MAIN_MENU
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+    # Repositories / UI
+    ship_repository = ShipRepository()
+    game_ui = GameUI(
+        screen_width,
+        screen_height
+    )
+    pause_menu = PauseMenu(
+        screen_width,
+        screen_height
+    )
+    main_menu = MainMenu(
+        screen,
+        ship_repository
+    )
 
-            main_menu.handle_event(event)
-
-        main_menu.update(delta)
-
-        screen.fill((0, 0, 0))
-
-        main_menu.draw()
-
-        pygame.display.flip()
-
-        # Check what the menu wants to do
-        if main_menu.state == GameState.GAMEPLAY:
-            menu_running = False
-
-        elif main_menu.state == GameState.EXITING:
-            pygame.quit()
-            sys.exit()
-
-    # Create sprite groups
-    laser_sprites = Laser.SPRITES  # Use the class-level laser group
-    meteor_sprites = Meteor.SPRITES  # Use the class-level meteor group
+    # Game objects
+    laser_sprites = Laser.SPRITES
+    meteor_sprites = Meteor.SPRITES
     explosion_sprites = pygame.sprite.Group()
-    
-    # Load explosion frames
+
     explosion_frames = [
-        pygame.transform.scale_by(pygame.image.load(join("assets", "images", "explosion", f"{i}.png")).convert_alpha(), 3)
+        pygame.transform.scale_by(
+            pygame.image.load(
+                join(
+                    "assets",
+                    "images",
+                    "explosion",
+                    f"{i}.png"
+                )
+            ).convert_alpha(),
+            3
+        )
         for i in range(1, 20)
     ]
-    # Create the player
-    player = Player(screen_width, screen_height, main_menu.ships[main_menu.selected_ship])
-    ALL_SPRITES.add(player)
 
-    # Create the starry background
-    stars_background = StarBackground(STAR_COUNT, screen_width, screen_height, 4)
-    # Create the meteor spawner
+    player = None
+    stars_background = None
+    meteor_spawner = None
+    sound_manager = None
 
-    meteor_spawner = MeteorSpawner(screen_width, screen_height)
-
-    # Initialize sound manager
-    sound_manager = SoundManager()
-    sound_manager.play_background_music()  # Start background music
-    # Initialize pause menu
-
-    # Variable to see the score
     score = 0
 
-    # Main game loop
-    running = True
-    paused = False
-    while running:
-        # Event handling
+    # Main loop
+    while game_state != GameState.EXITING:
+        dt = clock.tick(60) / 1000.0
+        # Events 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                game_state = GameState.EXITING
+                continue
 
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
-                    paused = not paused
+            # # MAIN MENU
+            if game_state == GameState.MAIN_MENU:
+                main_menu.handle_event(event)
+                if main_menu.state == GameState.GAMEPLAY:
+                    player = Player(
+                        screen_width,
+                        screen_height,
+                        main_menu.ships[
+                            main_menu.selected_ship
+                        ]
+                    )
 
-            # Process events for UI elements
-            game_ui.process_event(event)
-            if paused:
-                pause_menu.ui_manager.process_events(event)
+                    ALL_SPRITES.add(player)
 
-                # Handle pause menu button clicks
-                if event.type == pygame_gui.UI_BUTTON_PRESSED:
-                    if event.ui_element == pause_menu.restart_button:
-                        # Restart the game - reset to main menu state
-                        paused = False
-                        main_menu.state = GameState.MAIN_MENU
-                        # Reset game state here if needed
-                    elif event.ui_element == pause_menu.quit_button:
-                        # Quit the game
-                        running = False
+                    stars_background = StarBackground(
+                        STAR_COUNT,
+                        screen_width,
+                        screen_height,
+                        4
+                    )
 
-        # Calculate delta time
-        delta = clock.tick(60) / 1000  # Amount of seconds between each loop
+                    meteor_spawner = MeteorSpawner(
+                        screen_width,
+                        screen_height
+                    )
 
-        # Game logic updates
-        if not paused:
-            player.update(delta, laser_sprites, sound_manager)  # Pass sound manager to player
-            laser_sprites.update(delta)
-            # Update the starry background
-            stars_background.update(delta)
-            # Meteor spawning
-            meteor_spawner.update(delta)
-            # Update meteor sprites
-            meteor_sprites.update(delta)
-            # Update explosion sprites
-            explosion_sprites.update(delta * 8)
-            # Handle collisions and update score
-            score = handle_collisions(player, laser_sprites, meteor_sprites, score, explosion_frames, explosion_sprites, sound_manager)
+                    sound_manager = SoundManager()
+                    sound_manager.play_background_music()
 
-        # Drawing / rendering
-        screen.fill((0, 0, 0))  # Fill the screen with black
-        # Draw the starry background
-        stars_background.draw(screen)
+                    score = 0
 
-        # Draw all sprites (includes player, lasers, and meteors)
-        ALL_SPRITES.draw(screen)
-        # Draw explosion sprites
-        explosion_sprites.draw(screen)
+                    game_state = GameState.GAMEPLAY
 
-        # Update UI elements
-        update_ui(game_ui, delta, score, player)
+                elif main_menu.state == GameState.EXITING:
+                    game_state = GameState.EXITING
 
-        # Draw UI elements on top of everything
-        game_ui.draw(screen)
-        
-        # Draw pause menu if paused
-        if paused:
-            pause_menu.update(delta)
+            # GAMEPLAY
+            elif game_state == GameState.GAMEPLAY:
+                game_ui.process_event(event)
+
+                if event.type == pygame.KEYDOWN:
+
+                    if event.key == pygame.K_p:
+                        game_state = GameState.PAUSED
+
+                    elif event.key == pygame.K_ESCAPE:
+                        game_state = GameState.PAUSED
+
+            # PAUSED
+            elif game_state == GameState.PAUSED:
+
+                new_state = pause_menu.handle_event(event)
+
+                if new_state is not None:
+                    game_state = new_state
+
+                # Allow P / ESC to resume
+                if event.type == pygame.KEYDOWN:
+                    if event.key in (
+                        pygame.K_p,
+                        pygame.K_ESCAPE
+                    ):
+                        game_state = GameState.GAMEPLAY
+
+            # GAME OVER
+
+            elif game_state == GameState.GAME_OVER:
+
+                new_state = GameOverScreen.handle_event(event)
+
+                if new_state is not None:
+                    game_state = new_state 
+
+        # UPDATE
+        if game_state == GameState.MAIN_MENU:
+
+            main_menu.update(dt)
+
+        elif game_state == GameState.GAMEPLAY:
+
+            player.update(
+                dt,
+                laser_sprites,
+                sound_manager
+            )
+
+            laser_sprites.update(dt)
+            stars_background.update(dt)
+            meteor_spawner.update(dt)
+            meteor_sprites.update(dt)
+            explosion_sprites.update(dt * 8)
+
+            score = handle_collisions(
+                player,
+                laser_sprites,
+                meteor_sprites,
+                score,
+                explosion_frames,
+                explosion_sprites,
+                sound_manager
+            )
+
+            update_ui(
+                game_ui,
+                dt,
+                score,
+                player
+            )
+
+            # Check player death
+            if player.current_health <= 0:
+
+                sound_manager.stop_background_music()
+
+                game_over_screen = GameOverScreen(
+                    screen_width,
+                    screen_height
+                )
+
+                game_over_screen.score_label.set_text(
+                    f"Final Score: {score}"
+                )
+
+                game_state = GameState.GAME_OVER
+
+        elif game_state == GameState.PAUSED:
+
+            pause_menu.update(dt)
+
+        elif game_state == GameState.GAME_OVER:
+
+            game_over_screen.ui_manager.update(dt)
+
+        # DRAW
+        screen.fill((0, 0, 0))
+
+        if game_state == GameState.MAIN_MENU:
+
+            main_menu.draw()
+
+        elif game_state == GameState.GAMEPLAY:
+
+            stars_background.draw(screen)
+
+            ALL_SPRITES.draw(screen)
+
+            explosion_sprites.draw(screen)
+
+            game_ui.draw(screen)
+
+        elif game_state == GameState.PAUSED:
+
+            # Draw the game underneath the pause menu
+
+            stars_background.draw(screen)
+
+            ALL_SPRITES.draw(screen)
+
+            explosion_sprites.draw(screen)
+
+            game_ui.draw(screen)
+
             pause_menu.draw(screen)
 
-        # Update the display
+        elif game_state == GameState.GAME_OVER:
+
+            stars_background.draw(screen)
+
+            ALL_SPRITES.draw(screen)
+
+            explosion_sprites.draw(screen)
+
+            game_ui.draw(screen)
+
+            game_over_screen.ui_manager.draw_ui(screen)
+
         pygame.display.flip()
 
-        # Check for ESC key press to exit the game
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_ESCAPE]:
-            running = False
-
-        # Check if player is dead and show game over screen
-        if player.current_health <= 0:
-            # Show game over screen using pygame_gui
-            update_ui(game_ui, delta, score, player)
-            game_ui.draw(screen)
-            pygame.display.flip()
-
-            game_over_screen = GameOverScreen(screen_width, screen_height)
-            game_over_screen.score_label.set_text(f'Final Score: {score}')
-            while True:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                # Update the game over screen UI
-                game_over_screen.ui_manager.update(delta)
-                # turn off the background music
-                sound_manager.stop_background_music()
-                # Draw the game over screen
-                game_over_screen.ui_manager.draw_ui(screen)
-                pygame.display.flip()
-
-    # Quit pygame
+    # Shutdown
     pygame.quit()
     sys.exit()
 
